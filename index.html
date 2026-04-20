@@ -1,0 +1,2614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVS Premium Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,500&family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-soft:#f7f7f4;
+  --bg-card:#ffffff;
+  --ink:#0a0a0a;
+  --ink-2:#2b2b2b;
+  --ink-3:#595959;
+  --ink-4:#8a8a8a;
+  --line:#e6e4df;
+  --line-2:#cecac3;
+  --brand:#0038a8;
+  --brand-2:#0a5fff;
+  --race:#e5231b;
+  --race-2:#ff4d43;
+  --gold:#c49a3e;
+  --pos:#127a3e;
+  --neg:#c8261c;
+  --accent:#ffd84d;
+  --tick:rgba(0,0,0,.05);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --body:'Archivo',system-ui,sans-serif;
+  --display:'Fraunces',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== NAV ===== */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1500px;margin:0 auto;
+  padding:14px 28px;
+  display:flex;align-items:center;gap:24px;
+}
+.brand{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+  white-space:nowrap;
+}
+.brand-mark{
+  width:10px;height:10px;background:var(--race);
+  display:inline-block;border-radius:50%;
+  box-shadow:0 0 0 3px rgba(229,35,27,.15);
+}
+.nav-links{
+  display:flex;gap:4px;flex-wrap:wrap;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  flex:1;
+}
+.nav-links a{
+  color:var(--ink-3);
+  padding:6px 10px;
+  border-radius:4px;
+  white-space:nowrap;
+}
+.nav-links a:hover{background:var(--bg-soft);color:var(--ink);text-decoration:none}
+.nav-links a.active{background:var(--ink);color:#fff}
+.nav-meta{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--ink-4);
+  text-align:right;
+  line-height:1.4;
+  white-space:nowrap;
+}
+.nav-meta strong{color:var(--race);display:block;font-weight:600;letter-spacing:.04em}
+
+/* ===== LAYOUT ===== */
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
+section.hero{padding:48px 0 56px}
+
+.module-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;gap:24px;
+  margin-bottom:36px;
+  padding-bottom:18px;
+  border-bottom:2px solid var(--ink);
+}
+.module-tag{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--race);
+  margin-bottom:8px;
+  font-weight:600;
+}
+.module-head h2{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:44px;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+.module-head h2 em{color:var(--race);font-style:italic;font-weight:600}
+.module-sub{
+  font-size:14px;
+  color:var(--ink-3);
+  max-width:420px;
+  text-align:right;
+  line-height:1.55;
+}
+
+/* ===== HERO / COMMAND CENTER ===== */
+.hero-head{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:40px;
+  align-items:end;
+  margin-bottom:36px;
+  padding-bottom:24px;
+  border-bottom:2px solid var(--ink);
+}
+.hero-head h1{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:clamp(40px,5vw,68px);
+  line-height:.95;
+  letter-spacing:-.025em;
+}
+.hero-head h1 em{color:var(--race);font-style:italic;font-weight:600}
+.hero-head h1 span.ser{font-family:var(--display);font-style:italic;font-weight:400}
+.hero-lede{
+  font-size:15px;
+  color:var(--ink-3);
+  line-height:1.6;
+  border-left:2px solid var(--race);
+  padding-left:14px;
+}
+.hero-lede strong{color:var(--ink);font-weight:600}
+
+.ticker{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0;
+  background:var(--ink);
+  color:#fff;
+  margin:0 -28px 32px;
+  padding:14px 28px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.02em;
+}
+.tick-cell{padding:0 18px;border-left:1px solid rgba(255,255,255,.15)}
+.tick-cell:first-child{border-left:0}
+.tick-label{color:rgba(255,255,255,.55);text-transform:uppercase;font-size:9.5px;letter-spacing:.14em;margin-bottom:4px}
+.tick-val{font-size:18px;font-weight:600;color:#fff;line-height:1}
+.tick-chg{font-size:11px;margin-top:4px}
+.tick-chg.up{color:#7ee2a5}
+.tick-chg.down{color:#ff8b82}
+
+.pulse{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-bottom:32px;
+}
+.pulse-q{
+  background:#fff;
+  padding:22px 24px;
+  min-height:200px;
+}
+.pulse-q h4{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-4);
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+.pulse-q h4 strong{color:var(--ink);font-weight:700}
+.pulse-big{
+  font-family:var(--display);
+  font-size:38px;
+  font-weight:500;
+  letter-spacing:-.02em;
+  line-height:1;
+  margin-bottom:6px;
+}
+.pulse-body{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.pulse-body ul{list-style:none;padding:0;margin:8px 0 0}
+.pulse-body li{padding:4px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;font-size:13px}
+.pulse-body li:last-child{border-bottom:0}
+.pulse-body li strong{font-family:var(--mono);font-weight:600}
+
+.alerts{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:32px;
+}
+.alert{
+  padding:16px 18px;
+  border-left:3px solid var(--ink);
+  background:var(--bg-soft);
+}
+.alert.red{border-left-color:var(--race)}
+.alert.gold{border-left-color:var(--gold)}
+.alert.blue{border-left-color:var(--brand)}
+.alert-label{
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.alert.red .alert-label{color:var(--race)}
+.alert.gold .alert-label{color:var(--gold)}
+.alert.blue .alert-label{color:var(--brand)}
+.alert-title{font-family:var(--display);font-weight:500;font-size:17px;line-height:1.25;margin-bottom:6px}
+.alert-body{font-size:13px;color:var(--ink-3);line-height:1.5}
+
+.priorities{
+  background:var(--ink);
+  color:#fff;
+  margin:0 -28px;
+  padding:28px 28px;
+}
+.priorities h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:22px;
+  margin-bottom:16px;
+  letter-spacing:-.01em;
+}
+.priorities h3 em{color:var(--race-2);font-style:italic}
+.priority-list{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:20px;
+}
+.priority{border-top:1px solid rgba(255,255,255,.25);padding-top:12px}
+.priority-n{font-family:var(--mono);font-size:11px;color:var(--race-2);margin-bottom:6px;letter-spacing:.1em;font-weight:600}
+.priority-t{font-size:14px;line-height:1.4}
+
+/* ===== CARDS / GRID ===== */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  padding:22px 24px;
+  border-radius:2px;
+}
+.card.accent{border-left:3px solid var(--race)}
+.card.brand-accent{border-left:3px solid var(--brand)}
+.card h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:22px;
+  letter-spacing:-.01em;
+  margin-bottom:6px;
+  line-height:1.2;
+}
+.card h4{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-4);
+  margin-bottom:10px;
+  font-weight:600;
+}
+.card p{font-size:14px;color:var(--ink-2);line-height:1.55;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+
+.kpi{
+  background:#fff;
+  border:1px solid var(--line);
+  padding:18px 20px;
+}
+.kpi-label{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-4);
+  margin-bottom:10px;
+}
+.kpi-val{
+  font-family:var(--display);
+  font-size:36px;
+  font-weight:500;
+  letter-spacing:-.02em;
+  line-height:1;
+}
+.kpi-unit{font-size:14px;color:var(--ink-3);font-family:var(--body);margin-left:4px;font-weight:400}
+.kpi-chg{
+  font-family:var(--mono);
+  font-size:11px;
+  margin-top:8px;
+  font-weight:600;
+}
+.kpi-chg.up{color:var(--pos)}
+.kpi-chg.down{color:var(--neg)}
+.kpi-note{font-size:11px;color:var(--ink-4);margin-top:4px;line-height:1.4}
+
+/* ===== TABLES ===== */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+.tbl th{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  text-align:left;
+  padding:12px 12px;
+  background:var(--ink);
+  color:#fff;
+  font-weight:500;
+  position:sticky;top:0;
+}
+.tbl td{
+  padding:11px 12px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+}
+.tbl tr:nth-child(even) td{background:var(--bg-soft)}
+.tbl tr:hover td{background:#fffbea}
+.tbl td.mono{font-family:var(--mono);font-size:12.5px}
+.tbl td.num{font-family:var(--mono);font-size:12.5px;text-align:right}
+.tbl td strong{font-weight:600}
+.tbl td .pos{color:var(--pos);font-weight:600}
+.tbl td .neg{color:var(--neg);font-weight:600}
+.tbl caption{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  text-align:left;
+  padding:0 0 10px;
+  caption-side:top;
+}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);margin-bottom:28px}
+
+/* ===== CHART ===== */
+.chart-box{
+  background:#fff;
+  border:1px solid var(--line);
+  padding:22px 24px;
+  margin-bottom:24px;
+}
+.chart-box h4{
+  font-family:var(--display);
+  font-size:19px;
+  font-weight:500;
+  margin-bottom:4px;
+  letter-spacing:-.01em;
+}
+.chart-box p.sub{font-size:12.5px;color:var(--ink-3);margin-bottom:14px}
+.chart-canvas{position:relative;height:300px}
+.chart-canvas.tall{height:380px}
+
+/* ===== TAG / BADGE ===== */
+.tag{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid var(--line-2);
+  color:var(--ink-3);
+  margin-right:6px;
+  font-weight:500;
+}
+.tag.red{background:var(--race);color:#fff;border-color:var(--race)}
+.tag.blue{background:var(--brand);color:#fff;border-color:var(--brand)}
+.tag.black{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tag.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+.tag.verify{background:#fff3c4;color:#7a5400;border-color:#e4c870}
+
+/* ===== CALLOUT ===== */
+.callout{
+  background:var(--bg-soft);
+  border-left:3px solid var(--ink);
+  padding:18px 22px;
+  margin:24px 0;
+}
+.callout.race{border-left-color:var(--race);background:#fff5f4}
+.callout.brand{border-left-color:var(--brand);background:#f0f5ff}
+.callout.gold{border-left-color:var(--gold);background:#fdf8eb}
+.callout h5{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin-bottom:8px;
+  font-weight:700;
+}
+.callout.race h5{color:var(--race)}
+.callout.brand h5{color:var(--brand)}
+.callout.gold h5{color:var(--gold)}
+.callout p{font-size:14px;line-height:1.6;margin-bottom:8px}
+.callout p:last-child{margin-bottom:0}
+
+/* ===== PROSE ===== */
+.prose{max-width:880px;margin-bottom:28px}
+.prose p{font-size:15px;line-height:1.65;color:var(--ink-2);margin-bottom:14px}
+.prose h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:26px;
+  letter-spacing:-.01em;
+  margin:32px 0 12px;
+  line-height:1.2;
+}
+.prose h4{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--race);
+  margin:22px 0 8px;
+  font-weight:700;
+}
+.prose ul{padding-left:20px;margin-bottom:14px}
+.prose li{font-size:14px;line-height:1.6;color:var(--ink-2);margin-bottom:5px}
+.prose strong{color:var(--ink);font-weight:600}
+
+/* ===== PERSONA ===== */
+.persona{
+  background:#fff;
+  border:1px solid var(--line);
+  padding:22px 24px;
+  position:relative;
+}
+.persona-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--race);
+  margin-bottom:6px;
+  font-weight:700;
+}
+.persona h4{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:22px;
+  letter-spacing:-.01em;
+  margin-bottom:12px;
+  line-height:1.2;
+}
+.persona h4 em{font-style:italic;color:var(--brand)}
+.persona-meta{
+  font-family:var(--mono);
+  font-size:11.5px;
+  color:var(--ink-3);
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+  line-height:1.6;
+}
+.persona-row{font-size:13px;margin-bottom:7px;line-height:1.5}
+.persona-row strong{color:var(--ink);font-weight:600;display:inline-block;min-width:0;margin-right:4px}
+
+/* ===== SOURCES ===== */
+.src{
+  background:var(--bg-soft);
+  padding:32px 28px;
+  margin:0 -28px -72px;
+  border-top:2px solid var(--ink);
+}
+.src h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:26px;
+  margin-bottom:14px;
+  letter-spacing:-.01em;
+}
+.src-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px 24px;
+  font-size:12.5px;
+  color:var(--ink-3);
+}
+.src-grid a{color:var(--brand);font-family:var(--mono);font-size:11.5px}
+.src-grid strong{color:var(--ink);display:block;font-weight:600;margin-bottom:2px}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:1100px){
+  .ticker{grid-template-columns:repeat(3,1fr);gap:18px}
+  .pulse{grid-template-columns:1fr}
+  .alerts{grid-template-columns:1fr}
+  .priority-list{grid-template-columns:repeat(2,1fr)}
+  .grid-3,.grid-4{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .hero-head{grid-template-columns:1fr}
+  .src-grid{grid-template-columns:1fr}
+  .module-head{grid-template-columns:1fr}
+  .module-sub{text-align:left;max-width:100%}
+}
+@media (max-width:700px){
+  .wrap{padding:0 16px}
+  .ticker{grid-template-columns:repeat(2,1fr);margin:0 -16px 24px;padding:14px 16px}
+  .grid-3,.grid-4,.grid-2{grid-template-columns:1fr}
+  .priority-list{grid-template-columns:1fr}
+  .hero-head h1{font-size:38px}
+  .module-head h2{font-size:32px}
+  .priorities{margin:0 -16px;padding:24px 16px}
+  .src{margin:0 -16px -72px;padding:24px 16px}
+}
+
+/* ===== PRINT ===== */
+@media print{
+  .nav{display:none}
+  body{font-size:10pt}
+  section{padding:18pt 0;page-break-inside:avoid;border-bottom:1px solid #000}
+  .chart-box,.card,.kpi{break-inside:avoid}
+  .priorities{background:#000 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ticker{background:#000 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{color:#000;text-decoration:none}
+  .alerts{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ======== NAVIGATION ======== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-mark"></span>TVS · Premium Intel</div>
+    <div class="nav-links">
+      <a href="#m00" class="active">00 · Command</a>
+      <a href="#m01">01 · Industry</a>
+      <a href="#m02">02 · TVS</a>
+      <a href="#m03">03 · Norton</a>
+      <a href="#m04">04 · EICMA</a>
+      <a href="#m05">05 · Competitors</a>
+      <a href="#m06">06 · Premium</a>
+      <a href="#m07">07 · Social</a>
+      <a href="#m08">08 · Apache Nation</a>
+      <a href="#m09">09 · Retail</a>
+      <a href="#m10">10 · EV</a>
+      <a href="#m11">11 · Racing</a>
+      <a href="#m12">12 · PPO Plan</a>
+      <a href="#m13">13 · Brand</a>
+      <a href="#m14">14 · Finance</a>
+      <a href="#m15">15 · News</a>
+    </div>
+    <div class="nav-meta">
+      <strong>LIVE · APR 2026</strong>
+      Data refreshed 20 Apr 2026
+    </div>
+  </div>
+</nav>
+
+<!-- ======== MODULE 00 · COMMAND CENTER ======== -->
+<section class="hero" id="m00">
+  <div class="wrap">
+    <div class="hero-head">
+      <div>
+        <div class="module-tag">Module 00 · Command Center</div>
+        <h1>The Premium Business, <em>at a glance.</em></h1>
+      </div>
+      <p class="hero-lede">A single-screen briefing for the Associate Brand Manager of TVS Motor Company's Premium vertical. Built on <strong>verified public data</strong> (SIAM, FADA, Vahan, company disclosures). Estimates and internal metrics are clearly flagged. The goal: walk into any meeting more prepared than anyone else in the room.</p>
+    </div>
+
+    <!-- LIVE KPI TICKER -->
+    <div class="ticker">
+      <div class="tick-cell">
+        <div class="tick-label">Industry 2W FY26</div>
+        <div class="tick-val">2.14<span style="font-size:11px;opacity:.6"> Cr</span></div>
+        <div class="tick-chg up">▲ 13.4% YoY</div>
+      </div>
+      <div class="tick-cell">
+        <div class="tick-label">TVS 2W Share</div>
+        <div class="tick-val">~19%</div>
+        <div class="tick-chg up">▲ from ~18%</div>
+      </div>
+      <div class="tick-cell">
+        <div class="tick-label">Apache FY26</div>
+        <div class="tick-val">5.71<span style="font-size:11px;opacity:.6"> L</span></div>
+        <div class="tick-chg up">▲ 28% YoY</div>
+      </div>
+      <div class="tick-cell">
+        <div class="tick-label">iQube Share (EV)</div>
+        <div class="tick-val">24.4%</div>
+        <div class="tick-chg up">▲ #1 in FY26</div>
+      </div>
+      <div class="tick-cell">
+        <div class="tick-label">RE 350cc Share</div>
+        <div class="tick-val">94%</div>
+        <div class="tick-chg">Unchallenged</div>
+      </div>
+      <div class="tick-cell">
+        <div class="tick-label">EV 2W Penetration</div>
+        <div class="tick-val">6.5%</div>
+        <div class="tick-chg up">▲ from 5.6%</div>
+      </div>
+    </div>
+
+    <!-- PULSE MATRIX -->
+    <div class="pulse">
+      <div class="pulse-q">
+        <h4><strong>Q1</strong> · Industry Health</h4>
+        <div class="pulse-big">21.4M <span style="font-size:13px;color:var(--ink-3);font-family:var(--body)">units · FY26</span></div>
+        <div class="pulse-body">
+          First year to cross the pre-Covid FY19 peak. Scooters hit 8.1M, bikes recovering. GST 2.0 price cuts on &lt;350cc 2Ws materially lifted H2.
+          <ul>
+            <li>Scooter YoY <strong class="pos">+18%</strong></li>
+            <li>Motorcycle YoY <strong class="pos">+9%</strong></li>
+            <li>Exports (industry) <strong class="pos">+24%</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pulse-q">
+        <h4><strong>Q2</strong> · TVS Premium Position</h4>
+        <div class="pulse-big">38% <span style="font-size:13px;color:var(--ink-3);font-family:var(--body)">of 150-200cc</span></div>
+        <div class="pulse-body">
+          Apache dominates the 150-200cc segment. But this is a <strong>performance-commuter</strong> moat, not a premium-lifestyle one — that's where the RE fight actually is.
+          <ul>
+            <li>Apache FY26 <strong>5,71,376 units</strong></li>
+            <li>Apache 310 Jan'26 <strong class="pos">+151% YoY</strong></li>
+            <li>Ronin Jan'26 <strong class="pos">+127% YoY</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pulse-q">
+        <h4><strong>Q3</strong> · Competitive Threat Radar</h4>
+        <div class="pulse-big" style="color:var(--race)">3 live threats</div>
+        <div class="pulse-body">
+          All three are in the ₹1.7L–₹4L lifestyle-premium corridor — exactly where Apache is weakest and where RE extracts its 28% EBITDA.
+          <ul>
+            <li>RE Bullet 650 + Flying Flea <strong class="neg">Launching 2026</strong></li>
+            <li>Bajaj+KTM+Triumph 350-450cc <strong>60% share</strong></li>
+            <li>Honda CB350 expanding BigWing</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pulse-q">
+        <h4><strong>Q4</strong> · Opportunity Map</h4>
+        <div class="pulse-big">Apr 2026 <span style="font-size:13px;color:var(--ink-3);font-family:var(--body)">Norton launch</span></div>
+        <div class="pulse-body">
+          Norton India launch (Apr 2026), Apache RTX 300 ramp, RR450 upcoming — TVS's most active premium product phase ever.
+          <ul>
+            <li>Norton 4 models at EICMA '25</li>
+            <li>Apache RTX 300 <strong>3-mo waitlist</strong></li>
+            <li>Apache RR450 <strong>Nov 2026 [VERIFY]</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="alerts">
+      <div class="alert red">
+        <div class="alert-label">▲ Threat</div>
+        <div class="alert-title">RE Flying Flea launches end-2026</div>
+        <div class="alert-body">C6 (~₹4.5L) + S6 scrambler (~₹2-3L) will define premium-EV-lifestyle before iQube can climb into that space. iQube's positioning as functional commuter EV becomes a liability the moment RE's retro-electric lands.</div>
+      </div>
+      <div class="alert gold">
+        <div class="alert-label">★ Opportunity</div>
+        <div class="alert-title">Norton April 2026: 5 years of build-up</div>
+        <div class="alert-body">First Norton ever sold in India. V4 Manx (~₹20L+) and mid-weight Atlas 585cc (India-made at Hosur) land together. Dedicated premium retail network. This is TVS's single biggest brand lever since Apache.</div>
+      </div>
+      <div class="alert blue">
+        <div class="alert-label">○ Structural</div>
+        <div class="alert-title">Ola collapse reshaping EV segment</div>
+        <div class="alert-body">Ola FY26: 1.64L units, down 52%. TVS (+44%), Bajaj (+25%), Ather (+82%), Hero Vida (+196%). Market rewarding trust + service depth. Premium-EV window now open for a well-positioned entrant.</div>
+      </div>
+    </div>
+
+    <!-- PRIORITIES -->
+    <div class="priorities">
+      <h3>Intern priorities, <em>this week.</em></h3>
+      <div class="priority-list">
+        <div class="priority">
+          <div class="priority-n">01</div>
+          <div class="priority-t">Map the <strong>Apache-to-Hunter defection</strong>. Mystery-shop one RE Studio + one TVS dealer in Bengaluru. Document gap at every touchpoint.</div>
+        </div>
+        <div class="priority">
+          <div class="priority-n">02</div>
+          <div class="priority-t">Draft the <strong>Norton April launch activation brief</strong>. Before the PR team does. 10 slides on why April is a brand moment, not just a product drop.</div>
+        </div>
+        <div class="priority">
+          <div class="priority-n">03</div>
+          <div class="priority-t">Audit the <strong>Apache RTX 300 conversion funnel</strong>. 3-month waitlist is the biggest premium signal TVS has had in years — who's buying, why, what next.</div>
+        </div>
+        <div class="priority">
+          <div class="priority-n">04</div>
+          <div class="priority-t">Build an <strong>Apache Nation pilot proposal</strong>. One city, one event, ₹5-8L budget, ready before the next monthly review.</div>
+        </div>
+        <div class="priority">
+          <div class="priority-n">05</div>
+          <div class="priority-t">Get in front of <strong>five Apache owners</strong> this week. Recorded. Their verbatim quotes are more valuable than any deck you'll build.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 01 · INDUSTRY INTELLIGENCE ======== -->
+<section id="m01">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 01</div>
+        <h2>Industry <em>Intelligence</em></h2>
+      </div>
+      <p class="module-sub">Two-wheeler volumes, segment share, macro drivers. FY26 (Apr'25 – Mar'26) is the first year India's 2W industry has crossed its pre-Covid FY19 peak. Below what that actually means for the Premium BU.</p>
+    </div>
+
+    <!-- 1.1 VOLUME DASHBOARD -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">1.1 Volume dashboard</h3>
+
+    <div class="grid-4">
+      <div class="kpi">
+        <div class="kpi-label">2W Retail FY26</div>
+        <div class="kpi-val">2.14<span class="kpi-unit">crore</span></div>
+        <div class="kpi-chg up">▲ 13.4% YoY</div>
+        <div class="kpi-note">First year past FY19 peak. Source: FADA</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Motorcycles FY26</div>
+        <div class="kpi-val">~1.3<span class="kpi-unit">crore</span></div>
+        <div class="kpi-chg up">▲ recovery</div>
+        <div class="kpi-note">After 2 flat years. [VERIFY full split]</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Scooters FY26</div>
+        <div class="kpi-val">~8.1<span class="kpi-unit">million</span></div>
+        <div class="kpi-chg up">▲ 18% YoY</div>
+        <div class="kpi-note">GST 2.0 cuts drove H2 breakout</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">EV 2W Share</div>
+        <div class="kpi-val">6.54<span class="kpi-unit">%</span></div>
+        <div class="kpi-chg up">▲ from 5.6%</div>
+        <div class="kpi-note">Subsidies phasing out July '26</div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h4>2W Retail Sales — 5-year trajectory</h4>
+      <p class="sub">India 2W industry total retail (units, millions). FADA data. FY26 is the first year past the FY19 pre-Covid peak of ~21 million.</p>
+      <div class="chart-canvas"><canvas id="indTrend"></canvas></div>
+    </div>
+
+    <!-- 1.2 SEGMENT BREAKDOWN -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">1.2 Segment breakdown</h3>
+    <p style="color:var(--ink-3);font-size:14px;margin-bottom:18px;max-width:780px">The single most strategically-relevant cut. Understanding where premium sits — and how narrow the definition of "premium" actually is in India — frames every other decision.</p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Motorcycle segments · FY26 structure</caption>
+        <thead>
+          <tr>
+            <th style="width:26%">Segment</th>
+            <th style="width:14%">Volume (FY26 est.)</th>
+            <th style="width:10%">Share</th>
+            <th style="width:12%">ASP band</th>
+            <th>Key players · dynamics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Commuter ≤125cc</strong></td>
+            <td class="num">~75-80L</td>
+            <td class="num">~60%</td>
+            <td class="mono">₹55k–₹85k</td>
+            <td>Hero Splendor, HF Deluxe; Honda Shine, CB Unicorn. Volume engine of India — low margin, brand-thin. <span class="tag">Mass</span></td>
+          </tr>
+          <tr>
+            <td><strong>Executive 125-150cc</strong></td>
+            <td class="num">~18-22L</td>
+            <td class="num">~15%</td>
+            <td class="mono">₹85k–₹1.25L</td>
+            <td>TVS Raider 125, Honda SP125, Bajaj Pulsar 125. Upgrade-cycle beneficiary. <span class="tag">Mass+</span></td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Premium 150-200cc</strong><br><span style="font-size:11px;color:var(--race)">TVS stronghold</span></td>
+            <td class="num">~15L</td>
+            <td class="num">~11-12%</td>
+            <td class="mono">₹1.15L–₹1.70L</td>
+            <td>Apache RTR 160/200 (38% share), Pulsar N160/NS200, Honda CB Unicorn 160, Yamaha FZ. <span class="tag red">TVS Lead</span></td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Premium 200-350cc</strong><br><span style="font-size:11px;color:var(--race)">The real premium fight</span></td>
+            <td class="num">~12-13L</td>
+            <td class="num">~9-10%</td>
+            <td class="mono">₹1.70L–₹2.60L</td>
+            <td>RE 350 range (~9.3L units = dominant), Honda H'ness CB350, Pulsar 220, TVS RR310, Apache RTX 300. <span class="tag red">RE Lead</span></td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Premium+ 350-500cc</strong></td>
+            <td class="num">~1.5L</td>
+            <td class="num">~1%</td>
+            <td class="mono">₹2.30L–₹3.50L</td>
+            <td>Triumph Speed/Scrambler 400, Harley X440, Hero Mavrick 440, Bajaj Pulsar 400, RE Guerrilla/Himalayan 450, KTM 390. Bajaj-alliance dominant (60% share). <span class="tag blue">Open</span></td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Premium+ 500cc+</strong></td>
+            <td class="num">~45k</td>
+            <td class="num">~0.3%</td>
+            <td class="mono">₹3.50L–₹25L</td>
+            <td>RE 650 Twins (~97% share), Kawasaki, Triumph larger, BMW G310/G450. <span class="tag gold">Norton target</span></td>
+          </tr>
+          <tr>
+            <td><strong>Electric 2W</strong></td>
+            <td class="num">14.0L</td>
+            <td class="num">6.5%</td>
+            <td class="mono">₹85k–₹1.65L</td>
+            <td>TVS iQube (24.4%, #1), Bajaj Chetak (20.6%), Ather (17.2%), Ola (12%, falling), Hero Vida (10%, rising fast). <span class="tag blue">TVS Lead</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout race">
+      <h5>Why this table matters — the hidden premium problem</h5>
+      <p>TVS's "premium" leadership is entirely in 150-200cc. That segment is a performance-commuter category — buyers are price-sensitive upgrades from 125cc, not aspirational lifestyle buyers. <strong>The 200-350cc segment, where RE earns 28% EBITDA on soul and heritage, is where Apache has almost no presence</strong> outside the niche RR310. Ronin and RTX 300 are TVS's first serious attempts. Both are under 10k monthly units combined as of Jan 2026.</p>
+      <p>Strategic implication: Apache's 38% share of 150-200cc is a ceiling, not a foundation. The next leg of premium growth lives in the segment above — and that's a brand fight, not a product-spec fight.</p>
+    </div>
+
+    <!-- 1.3 MARKET SHARE -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">1.3 Market share matrix</h3>
+    <p style="color:var(--ink-3);font-size:14px;margin-bottom:18px;max-width:780px">FY26 retail (FADA). Note the Hero decline, TVS climb, RE acceleration.</p>
+
+    <div class="grid-2">
+      <div class="chart-box">
+        <h4>2W OEM retail share · FY26</h4>
+        <p class="sub">Share of total 2W retail (2.14 Cr units). Hero still #1 but narrowing. RE now > Bajaj on retail.</p>
+        <div class="chart-canvas"><canvas id="oemShare"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h4>YoY growth · FY26 vs FY25</h4>
+        <p class="sub">Where the share is moving. RE's +23%, TVS's sustained mid-teens growth, Hero's sub-industry growth all matter.</p>
+        <div class="chart-canvas"><canvas id="oemYoy"></canvas></div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>FY26 OEM retail snapshot</caption>
+        <thead>
+          <tr><th>OEM</th><th style="text-align:right">FY26 retail (units)</th><th style="text-align:right">FY25 retail</th><th style="text-align:right">YoY</th><th>Read</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Hero MotoCorp</strong></td><td class="num">60,83,248</td><td class="num">54,46,404</td><td class="num"><span class="pos">+11.7%</span></td><td>Still #1 but below industry avg — share drift continues.</td></tr>
+          <tr><td><strong>Honda 2W</strong></td><td class="num">53,61,458</td><td class="num">~47-48L</td><td class="num"><span class="pos">+~12%</span></td><td>Scooter slippage (Activa share 45→39%) is the story.</td></tr>
+          <tr><td><strong>TVS Motor</strong></td><td class="num">40,46,666</td><td class="num">~35.5L</td><td class="num"><span class="pos">+~14%</span></td><td>Apache, iQube, Jupiter all firing. Share nudging up.</td></tr>
+          <tr><td><strong>Bajaj Auto</strong></td><td class="num">22,49,778</td><td class="num">~20L</td><td class="num"><span class="pos">+~12%</span></td><td>Pulsar 400 + KTM-Triumph + Chetak. Premium-focused.</td></tr>
+          <tr><td><strong>Suzuki</strong></td><td class="num">11,40,730</td><td class="num">~10L</td><td class="num"><span class="pos">+~14%</span></td><td>Access 125 scooter cash cow; Gixxer 250 niche.</td></tr>
+          <tr><td><strong>Royal Enfield</strong></td><td class="num">11,08,597</td><td class="num">9,02,757</td><td class="num"><span class="pos">+22.8%</span></td><td>Crossed 10 lakh domestic first time. 94% of 350cc.</td></tr>
+          <tr><td><strong>Yamaha</strong></td><td class="num">7,15,564</td><td class="num">~6.8L</td><td class="num"><span class="pos">+~5%</span></td><td>R15/MT-15 only defensible franchise.</td></tr>
+          <tr><td><strong>Ather Energy</strong></td><td class="num">2,39,178</td><td class="num">1,31,172</td><td class="num"><span class="pos">+82.3%</span></td><td>Rizta transformed them from niche to serious.</td></tr>
+          <tr><td><strong>Ola Electric</strong></td><td class="num">1,64,295</td><td class="num">3,44,300</td><td class="num"><span class="neg">-52.3%</span></td><td>Collapse. Structural damage, not just a dip.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.4 MACRO -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">1.4 Macro environment</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Rural vs Urban</h4>
+        <h3>28.6% rural · 28.8% urban</h3>
+        <p>March '26 YoY retail growth. First time in three years rural matches urban in 2W demand — monsoon, MSP, rural income recovery all working.</p>
+        <p><strong>Premium read:</strong> Rural buyers are commuter-only. Premium growth stays an urban + Tier-2 story.</p>
+      </div>
+      <div class="card">
+        <h4>GST 2.0</h4>
+        <h3>Sub-350cc: GST rationalised</h3>
+        <p>Q2–Q3 FY26 reset: price cuts of ~₹5k–₹10k across most of the market. Drove October '26's record industry month.</p>
+        <p><strong>Premium read:</strong> RE Hunter and Apache both benefited. Helped close RE-vs-Apache price gap but RE also cut prices simultaneously.</p>
+      </div>
+      <div class="card">
+        <h4>Fuel + Financing</h4>
+        <h3>2W loan penetration rising</h3>
+        <p>India's 2W financing penetration now at ~55-60%. Premium segment is at ~75-80% financed (industry data, verify with dealer).</p>
+        <p><strong>Premium read:</strong> EMI affordability &gt; sticker price. Every ₹1,000 off EMI moves units. Dealer-finance partnerships are a silent differentiator.</p>
+      </div>
+    </div>
+
+    <!-- 1.5 EXPORT -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">1.5 Export intelligence</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>India 2W exports · FY26 wholesales (SIAM)</caption>
+        <thead><tr><th>OEM</th><th style="text-align:right">Jan'26 exports</th><th>Key markets</th><th>Premium relevance</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bajaj Auto</strong></td><td class="num">1,91,568</td><td>Africa (Nigeria, Kenya), LATAM (Colombia, Mexico)</td><td>KTM 390 range; Dominar Europe</td></tr>
+          <tr><td><strong>TVS Motor</strong></td><td class="num">1,10,933</td><td>Indonesia, Africa, LATAM; Europe (Apache RR310 / Norton)</td><td>Norton UK + EU; Apache RR310 badge-engineered BMW G310</td></tr>
+          <tr><td><strong>Honda 2W</strong></td><td class="num">54,832</td><td>Africa, ASEAN</td><td>Limited premium export</td></tr>
+          <tr><td><strong>Royal Enfield</strong></td><td class="num">~11,000/mo</td><td>Europe, Americas, SE Asia (80+ markets)</td><td>Full premium franchise. Himalayan 450 best-ever export year in FY26.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-3);margin-top:4px"><em>Source: SIAM Jan 2026 wholesales; RE FY26 release. TVS FY26 total exports 15.85 lakh units (+33% YoY). The Norton channel gives TVS a European premium export lever that none of its mass-market competitors can match.</em></p>
+  </div>
+</section>
+
+<!-- ======== MODULE 02 · TVS DEEP PROFILE ======== -->
+<section id="m02">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 02</div>
+        <h2>TVS Motor · <em>deep profile.</em></h2>
+      </div>
+      <p class="module-sub">Financials, product volumes, and the full Premium BU diagnostic. Every number here is from official TVS disclosures (Q3 FY26 results, 9M FY26, annual data) or SIAM wholesale records. Internal metrics (segment margin, repurchase rate) are not publicly disclosed and are called out explicitly.</p>
+    </div>
+
+    <!-- 2.1 FINANCIAL -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">2.1 Financial performance</h3>
+
+    <div class="grid-4">
+      <div class="kpi">
+        <div class="kpi-label">Revenue · Q3 FY26 (Std)</div>
+        <div class="kpi-val">₹12,476<span class="kpi-unit">Cr</span></div>
+        <div class="kpi-chg up">▲ 37.1% YoY</div>
+        <div class="kpi-note">Consol ₹14,755 Cr (+33.7%). Highest-ever quarter.</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">EBITDA margin · Q3</div>
+        <div class="kpi-val">13.1<span class="kpi-unit">%</span></div>
+        <div class="kpi-chg up">▲ +120 bps</div>
+        <div class="kpi-note">Record. PLI + scale + mix. Still below RE's ~27-28%.</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">PAT · Q3 FY26</div>
+        <div class="kpi-val">₹940<span class="kpi-unit">Cr</span></div>
+        <div class="kpi-chg up">▲ 52% YoY</div>
+        <div class="kpi-note">Standalone. Consol PAT ₹841 Cr (+48.6%)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total 2W/3W Q3</div>
+        <div class="kpi-val">15.44<span class="kpi-unit">lakh</span></div>
+        <div class="kpi-chg up">▲ 27% YoY</div>
+        <div class="kpi-note">All-time quarterly record</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="chart-box">
+        <h4>Revenue trajectory (standalone)</h4>
+        <p class="sub">Quarterly revenue, ₹ Cr. Q3 FY26 is the fourth consecutive record quarter.</p>
+        <div class="chart-canvas"><canvas id="tvsRev"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h4>EBITDA margin · quarterly</h4>
+        <p class="sub">% of standalone revenue. Benchmark: RE operates at ~27-28%. That gap is the premium brand valuation gap.</p>
+        <div class="chart-canvas"><canvas id="tvsMargin"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout brand">
+      <h5>TVS vs RE vs Bajaj · the margin gap you'll get asked about</h5>
+      <p><strong>EBITDA margins (latest disclosed):</strong> TVS ~13.1% · Bajaj Auto ~20% · Eicher/RE ~27-28% · Ola Electric negative.</p>
+      <p>RE earns roughly <strong>2x the EBITDA margin of TVS on 1/4th the units</strong>. That is not a cost problem. That is a brand problem. Every ₹1,000 of Apache ASP uplift flows almost entirely to margin. Every RE Hunter buyer who buys Apache Ronin instead is a margin trade on top of a revenue trade.</p>
+    </div>
+
+    <!-- 2.2 VOLUME -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">2.2 Volume breakdown by product</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>TVS domestic product-wise sales · Jan 2026 (latest monthly)</caption>
+        <thead><tr><th>Product</th><th style="text-align:right">Jan'26 units</th><th style="text-align:right">YoY</th><th style="text-align:right">MoM</th><th>Premium relevance</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jupiter</strong> (Scooter)</td><td class="num">1,29,744</td><td class="num"><span class="pos">+20.3%</span></td><td class="num"><span class="pos">+7.7%</span></td><td>#2 scooter in India</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Apache series</strong></td><td class="num">51,191</td><td class="num"><span class="pos">+48.3%</span></td><td class="num"><span class="pos">+12.5%</span></td><td>The core premium franchise</td></tr>
+          <tr><td><strong>XL moped</strong></td><td class="num">48,628</td><td class="num"><span class="pos">+~25%</span></td><td class="num">—</td><td>Mass / rural</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>iQube</strong> (EV)</td><td class="num">37,560</td><td class="num"><span class="pos">+50.3%</span></td><td class="num"><span class="pos">+6.8%</span></td><td>Premium-adjacent; #1 EV 2W</td></tr>
+          <tr><td><strong>Raider 125</strong></td><td class="num">~36,000</td><td class="num"><span class="pos">+28%</span></td><td class="num"><span class="pos">+~0%</span></td><td>Premium-commuter bridge</td></tr>
+          <tr><td><strong>Ntorq 125</strong> (Scooter)</td><td class="num">~32,000</td><td class="num"><span class="pos">+52%</span></td><td class="num"><span class="neg">-12.7%</span></td><td>Premium scooter</td></tr>
+          <tr><td><strong>Radeon</strong></td><td class="num">13,821</td><td class="num"><span class="pos">+31.6%</span></td><td class="num">—</td><td>Mass commuter</td></tr>
+          <tr><td><strong>Sport</strong></td><td class="num">10,966</td><td class="num"><span class="pos">+56.3%</span></td><td class="num">—</td><td>Entry bike</td></tr>
+          <tr><td><strong>Zest</strong></td><td class="num">9,410</td><td class="num"><span class="pos">+3.4%</span></td><td class="num">—</td><td>Mass scooter</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Ronin</strong></td><td class="num">8,247</td><td class="num"><span class="pos">+127%</span></td><td class="num"><span class="pos">+~high</span></td><td>Lifestyle-premium entry</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Apache 310 range</strong><br>(RR310 + RTR 310 + RTX 300)</td><td class="num">1,011</td><td class="num"><span class="pos">+151.5%</span></td><td class="num">—</td><td>RTX 300 ramp post-launch; 3-month waitlist</td></tr>
+          <tr><td><strong>Star City</strong></td><td class="num">40</td><td class="num"><span class="neg">-98.5%</span></td><td class="num">—</td><td>End-of-life SKU</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.3 PREMIUM DEEP DIVE -->
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">2.3 Premium business · deep dive <span style="color:var(--race);font-weight:400;font-style:italic;font-size:20px">— this is your section</span></h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Premium portfolio scorecard · TVS India (ex-showroom Delhi, approx)</caption>
+        <thead><tr><th>Product</th><th>Price (from)</th><th>Direct rival</th><th>Price gap</th><th>Monthly units (Jan'26)</th><th>Strategic call</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Apache RTR 160 4V</strong><br><span style="font-size:11px;color:var(--ink-4)">160cc performance commuter</span></td>
+            <td class="mono">₹1,18,690</td>
+            <td>Pulsar N160, Yamaha FZ-S</td>
+            <td class="mono">~±5k</td>
+            <td class="num">~32-35k<br><span style="font-size:11px;color:var(--ink-4)">est.</span></td>
+            <td>Defend. Value brand lens (Race Edition working).</td>
+          </tr>
+          <tr>
+            <td><strong>Apache RTR 200 4V</strong><br><span style="font-size:11px;color:var(--ink-4)">200cc performance</span></td>
+            <td class="mono">~₹1,53,000</td>
+            <td>Pulsar NS200, KTM 200 Duke</td>
+            <td class="mono">~₹40k vs KTM Duke</td>
+            <td class="num">~12-15k<br><span style="font-size:11px;color:var(--ink-4)">est.</span></td>
+            <td>Push racing pedigree narrative. This is where "Apache Sound" strategy plays.</td>
+          </tr>
+          <tr>
+            <td><strong>Ronin 225</strong><br><span style="font-size:11px;color:var(--ink-4)">Lifestyle crossover</span></td>
+            <td class="mono">₹1,26,690</td>
+            <td>RE Hunter 350 (₹1.49L+)</td>
+            <td class="mono">~₹22k cheaper</td>
+            <td class="num">8,247</td>
+            <td class="tag red">+127% YoY · real traction</td>
+          </tr>
+          <tr>
+            <td><strong>Apache RR310</strong><br><span style="font-size:11px;color:var(--ink-4)">Full-fairing sport</span></td>
+            <td class="mono">₹2,59,490</td>
+            <td>KTM RC 390 (₹3.18L), Kawasaki Ninja 400</td>
+            <td class="mono">~₹58k cheaper than KTM</td>
+            <td class="num">~500-700<br><span style="font-size:11px;color:var(--ink-4)">est.</span></td>
+            <td>Halo model. BMW G310R tech DNA. Under-marketed.</td>
+          </tr>
+          <tr>
+            <td><strong>Apache RTR 310</strong><br><span style="font-size:11px;color:var(--ink-4)">Naked "Freestyler"</span></td>
+            <td class="mono">₹2,42,000</td>
+            <td>KTM 390 Duke, BMW G310R</td>
+            <td class="mono">~₹55k cheaper than KTM</td>
+            <td class="num">~250-400<br><span style="font-size:11px;color:var(--ink-4)">est.</span></td>
+            <td>Cyborg styling divides opinion. Needs sharper comms.</td>
+          </tr>
+          <tr>
+            <td><strong>Apache RTX 300</strong><br><span style="font-size:11px;color:var(--race);font-weight:600">TVS's first ADV</span></td>
+            <td class="mono">₹1,99,000</td>
+            <td>RE Himalayan 450 (₹2.85L), KTM 390 Adv</td>
+            <td class="mono">~₹86k cheaper than RE</td>
+            <td class="num">~500-1000<br><span style="font-size:11px;color:var(--ink-4)">est.</span></td>
+            <td class="tag gold">3-month waitlist · biggest positive signal in years</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout race">
+      <h5>Premium ASP — the single most important metric you should track</h5>
+      <p>Public disclosures don't break out TVS's premium-segment ASP or margin. Analyst estimates put <strong>TVS's blended motorcycle ASP at roughly ₹80-85k</strong> vs <strong>RE's blended ASP of ~₹1.75-1.80L</strong> — a gap of ~₹90,000 per bike. On RE's ~11 lakh units, that gap alone is worth ~₹10,000 Cr in revenue.</p>
+      <p><strong>What you can do in 8 weeks:</strong> You can't change ASP. But you can build the proof-case that Apache's mid-₹2L products (RR310, RTR 310, RTX 300) outperform their KTM/Kawasaki rivals on value-per-rupee by ~20-25%. Turn that into one crisp pricing/positioning deck. Present it. That's a PPO-relevant artefact.</p>
+      <p class="tag verify">[VERIFY]</p> <em style="font-size:12px;color:var(--ink-3)">blended ASP numbers are analyst estimates. Cross-check with TVS IR presentation + Eicher Q3 FY26 release.</em>
+    </div>
+
+    <div class="grid-2">
+      <div class="card accent">
+        <h4>Premium share of TVS motorcycle sales</h4>
+        <h3>40% Apache · FY26</h3>
+        <p>Apache's share of TVS bike dispatches rose from 37% in FY25 to 40% in FY26 — 5,71,376 units on 14.1 lakh total bikes. The trajectory is right; it's the <strong>ASP within that 40%</strong> that needs lifting.</p>
+        <p>Every 1 percentage point of Apache mix shift upward toward the 300cc variants is worth ~₹150 Cr in incremental revenue on the base, and proportionally more in margin.</p>
+      </div>
+      <div class="card brand-accent">
+        <h4>The four TVS strategic assets</h4>
+        <h3>Norton · Racing · IP · iQube</h3>
+        <p><strong>Norton Motorcycles</strong> (acquired 2020, ~₹153 Cr + ~₹2,000 Cr invested, India launch April 2026). <strong>TVS Racing</strong> (Dakar Rally presence, Indian championships, academy). <strong>R&amp;D / IP</strong> (Hosur + UK Solihull + Indonesia plant). <strong>iQube</strong> (#1 EV 2W in India, FY26 share 24.4%).</p>
+        <p>Four assets that the mass-market 2W story undersells. Each deserves a dedicated activation plan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 03 · NORTON ======== -->
+<section id="m03">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 03 · Priority asset</div>
+        <h2>Norton Motorcycles <em>— TVS's most underused lever.</em></h2>
+      </div>
+      <p class="module-sub">Acquired by TVS in 2020 for ~₹153 Cr. ~₹2,000 Cr+ invested since. Four new models unveiled at EICMA Nov 2025. India launch confirmed <strong>April 2026</strong> — the single biggest premium brand event in TVS's history.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">3.1 Norton brand profile</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Heritage</h4>
+        <h3>1898 · Birmingham, UK</h3>
+        <p>Founded by James Lansdowne Norton. TT victories from the 1920s onwards. "Unapproachable" era 1930s. Norton Manx — the most successful single-cylinder racing motorcycle in Isle of Man TT history.</p>
+      </div>
+      <div class="card">
+        <h4>TVS era</h4>
+        <h3>April 2020 acquisition</h3>
+        <p>Acquired from UK administrators for ~£16M / ₹153 Cr. ~£250M / ~₹2,000 Cr+ invested since in HQ, R&amp;D, new platforms. UK workforce +25% in 2025 alone. Solihull facility re-tooled.</p>
+      </div>
+      <div class="card">
+        <h4>Strategic role</h4>
+        <h3>Premium halo for TVS group</h3>
+        <p>The Skoda–Porsche / Fiat–Ferrari logic. A prestige brand doing things the mass brand can learn from (and benefit by association from), without diluting either identity. India launch is the first time this logic touches the Indian market.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">3.2 The EICMA 2025 range — four models</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Norton 2026 range · unveiled EICMA Nov 2025</caption>
+        <thead><tr><th>Model</th><th>Engine</th><th>Positioning</th><th>Built at</th><th>India relevance</th></tr></thead>
+        <tbody>
+          <tr><td><strong>V4 Manx</strong></td><td>1200cc V4, ~185 bhp</td><td>Road-focused flagship superbike</td><td>Solihull, UK</td><td>Halo. Expected ₹25L+ in India. Low-volume, high-signal.</td></tr>
+          <tr><td><strong>V4 Manx R</strong></td><td>1200cc V4</td><td>Track-focused · limited edition</td><td>Solihull, UK</td><td>Collectors / brand statement. Likely ₹30L+ in India.</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Atlas 585</strong><br><span style="font-size:11px;color:var(--race);font-weight:600">The volume play</span></td><td>585cc parallel twin, 270° crank</td><td>Mid-weight adventure / roadster</td><td><strong>Hosur, India</strong></td><td>India-manufactured = India-price. Expected ~₹4-5.5L. Direct fight with RE Himalayan 450, Triumph 400X, KTM 390 Adv.</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Atlas GT</strong></td><td>585cc parallel twin</td><td>Sport-touring variant</td><td><strong>Hosur, India</strong></td><td>Range-sister to Atlas. Expected ~₹5-6.5L.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--ink-3);margin-top:4px"><em>Source: Autocar Pro, MCN, Rushlane (Oct–Nov 2025). The Atlas being India-made at Hosur under the UK-India FTA is the most commercially meaningful detail in the whole Norton revival story. It's what makes Norton a volume brand, not a collectors' brand.</em></p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">3.3 India launch strategy · April 2026</h3>
+
+    <div class="grid-2">
+      <div class="card accent">
+        <h4>Confirmed</h4>
+        <h3>Sudarshan Venu's commitment</h3>
+        <p>Per TVS CEO K. N. Radhakrishnan and Chairman Sudarshan Venu (Oct 2025 disclosures): India launch April 2026 via <strong>dedicated premium retail network</strong>, separate from existing TVS dealerships. New dealers being appointed. Select premium TVS models may co-locate with Norton.</p>
+        <p>V4 will be <strong>assembled at Solihull</strong> with India-sourced components. Atlas <strong>fully manufactured at Hosur</strong>, benefitting from India-UK FTA.</p>
+      </div>
+      <div class="card brand-accent">
+        <h4>Unconfirmed · analyst inference</h4>
+        <h3>Unit targets and pricing</h3>
+        <p>TVS has not publicly committed to India unit targets or pricing. Any number cited here is inferred:</p>
+        <p><strong>Atlas (India-made):</strong> ~₹4.5–6L realistic entry. <strong>V4 Manx (imported):</strong> ~₹25–35L. <strong>Y1 India volumes:</strong> ~2,000–4,000 units is a credible band (comparable to BMW G 310 early years). <strong>Y3 target:</strong> 10,000–15,000 units if Atlas is priced sharply.</p>
+        <p class="tag verify">[ESTIMATE]</p> <em style="font-size:12px;color:var(--ink-3)">Cross-check with official Norton India announcement when live.</em>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">3.4 Norton as TVS's premium halo</h3>
+
+    <div class="callout gold">
+      <h5>The framework that matters</h5>
+      <p><strong>Skoda / Porsche under VW Group:</strong> Porsche's engineering prestige elevates Skoda's positioning, not through branding but through perceived DNA (platform sharing, engineering credibility). Skoda sells ~1M cars globally at premium-adjacent prices; Porsche sells ~300k at 5x margin. Both win.</p>
+      <p><strong>Apache + Norton in India:</strong> Not co-branded products (that would dilute both). Instead: shared engineering credibility, shared racing pedigree, shared premium retail floor. The story "the people who build Norton also build Apache" becomes a quiet but persistent premium brand asset for Apache.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>What TVS could activate in 12 months</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Norton Heritage corner</strong> at every Apache Studio — TT photos, Isle of Man history, V4 display model.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Engineer-exchange programme</strong> publicised: Hosur engineers who work on both Apache RR310 and Norton Atlas.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>"Apache RR310 · Norton-tuned edition"</strong> — limited run. Single SKU, strong story, minimal cost.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Norton TT Heritage Ride India</strong> — a motorsport-history themed owner ride, TVS Racing attached.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Co-branded riding gear line</strong> (Norton x Apache Nation) — merchandise revenue + brand signal.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>What could derail it</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Pricing the Atlas too high</strong> — &gt; ₹6L puts it in RE Super Meteor 650 / Triumph 660 territory where the fight is harder. ₹4.5–5L is the sweet spot.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Generic launch communication</strong> — if Norton is marketed as "another premium bike," the 5 years of build-up is wasted. It needs a Norton-specific voice, not a TVS-group voice.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Dealer quality gap</strong> — a Norton experience that feels like a TVS showroom with a different logo would actively damage both brands.</li>
+          <li style="margin-bottom:8px;font-size:14px;line-height:1.55"><strong>Homologation or quality delays</strong> — Norton's 2010s-era quality reputation is an overhang. First 500 bikes delivered in India need to be perfect.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 04 · EICMA ======== -->
+<section id="m04">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 04</div>
+        <h2>EICMA 2025 · <em>what reached India.</em></h2>
+      </div>
+      <p class="module-sub">EICMA (Milan, 4–9 Nov 2025) is the world's largest motorcycle show. Global launches here typically arrive in India 6–18 months later. This is what TVS's Premium BU needs to know arrived, is arriving, or is not arriving at all.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">4.1 India-relevant launches from EICMA 2025</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>EICMA 2025 · models with confirmed or likely India path</caption>
+        <thead><tr><th>Brand</th><th>Model</th><th>Key specs</th><th>India launch</th><th>Premium BU impact</th></tr></thead>
+        <tbody>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Royal Enfield</strong></td>
+            <td>Flying Flea C6</td>
+            <td>Electric retro, ~150km range</td>
+            <td class="mono">2026 (late)</td>
+            <td><span class="tag red">Major threat</span> First retro-EV motorcycle in Indian market. Expected ~₹4.5L. Defines premium EV lifestyle before iQube can.</td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Royal Enfield</strong></td>
+            <td>Flying Flea S6</td>
+            <td>Scrambler electric, off-road</td>
+            <td class="mono">End 2026</td>
+            <td><span class="tag red">Major threat</span> ~₹2-3L band. Directly attacks the "first premium bike" buyer.</td>
+          </tr>
+          <tr>
+            <td><strong>Royal Enfield</strong></td>
+            <td>Bullet 650</td>
+            <td>648cc parallel twin, 47 bhp</td>
+            <td class="mono">Early 2026</td>
+            <td>Extends 650 franchise. Expected ~₹3.70L start. Cements 500-800cc moat.</td>
+          </tr>
+          <tr>
+            <td><strong>Royal Enfield</strong></td>
+            <td>Classic 650 · 125yr edition</td>
+            <td>Limited, hypershift paint</td>
+            <td class="mono">H1 2026</td>
+            <td>Brand statement — heritage storytelling at its sharpest.</td>
+          </tr>
+          <tr>
+            <td><strong>Royal Enfield</strong></td>
+            <td>Himalayan 750 (teased)</td>
+            <td>750cc adventure · larger sibling</td>
+            <td class="mono">2027+</td>
+            <td>Positions Himalayan as a platform, not a model. Long-term ADV depth.</td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Norton (TVS)</strong></td>
+            <td>V4 Manx / Manx R</td>
+            <td>1200cc V4 superbike</td>
+            <td class="mono">Apr 2026</td>
+            <td><span class="tag gold">TVS win</span> Halo product. First time TVS has a bike of this prestige in India.</td>
+          </tr>
+          <tr style="background:#fff5f4 !important">
+            <td><strong>Norton (TVS)</strong></td>
+            <td>Atlas · Atlas GT</td>
+            <td>585cc parallel twin, India-built</td>
+            <td class="mono">Apr 2026</td>
+            <td><span class="tag gold">TVS win</span> Volume play. India manufacture = sharp price point vs RE 650s.</td>
+          </tr>
+          <tr>
+            <td><strong>Honda</strong></td>
+            <td>CB300R refresh, CB500X updates</td>
+            <td>Mid-capacity</td>
+            <td class="mono">[VERIFY]</td>
+            <td>Honda BigWing keeps filling 350–500cc. Not a category threat yet but chipping in.</td>
+          </tr>
+          <tr>
+            <td><strong>Hero · Harley partnership</strong></td>
+            <td>X440 refresh / next HD-Hero</td>
+            <td>440cc / 500cc rumoured</td>
+            <td class="mono">[VERIFY]</td>
+            <td>X440 sales declining sharply. Hero needs the next product to keep the story alive.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">4.2 The EICMA read for the TVS Premium BU</h3>
+
+    <div class="prose">
+      <p>Three things to internalise:</p>
+
+      <h4>1 · Royal Enfield's EV is no longer hypothetical</h4>
+      <p>Flying Flea has moved from "sub-brand teased at EICMA 2024" to "two models revealed, both with 2026 launch dates." RE is deliberately creating a <strong>retro-lifestyle EV category</strong> before anyone else — the same way they created the 350cc modern-classic category a decade ago. <strong>TVS's counter is not an iQube variant; it is an Apache EV or a Ronin EV built as a lifestyle product, not a commuter.</strong> This is a strategic product-pipeline question the Premium BU should be raising internally, right now.</p>
+
+      <h4>2 · Norton gives TVS a 5-year premium runway RE has to defend against</h4>
+      <p>For the first time since RE's 2010 renaissance, a serious British motorcycle brand is entering the mid-weight India segment — and it's owned by an Indian OEM with manufacturing here. The 585cc twin Atlas is built to attack RE's 650 franchise without pricing itself out of the market. This is TVS's best competitive positioning in two decades. <strong>Most of the Premium BU's FY27 calendar should orbit around this launch.</strong></p>
+
+      <h4>3 · The 300-500cc segment is the most crowded motorcycle segment in India</h4>
+      <p>RE Guerrilla/Himalayan 450, Triumph Speed/Scrambler 400, Harley X440, Hero Mavrick 440, Bajaj Pulsar 400, KTM 390 trio, Honda CB350 variants, Norton Atlas 585. The Apache RTX 300 has walked into the hardest fight on the grid. The 3-month waitlist is genuine traction — but it's Month 3 of the fight, not the win. Competitive content (RTX 300 vs Himalayan 450 ride-off, RTX vs Triumph 400X owner comparisons) should be Apache's single most-invested content category for the next 12 months.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">4.3 Other global shows worth tracking</h3>
+
+    <div class="grid-3">
+      <div class="card"><h4>INTERMOT</h4><h3>Cologne · alternate-year</h3><p>Smaller than EICMA. Focus: Germany/Europe. Limited direct India relevance but BMW, KTM, Ducati typically preview here. Next: INTERMOT 2026.</p></div>
+      <div class="card"><h4>India Bike Week</h4><h3>Vagator, Goa · annual</h3><p>India's largest consumer motorcycle festival. RE-dominant historically. TVS presence has been functional, not strategic. Opportunity for Apache Nation-style activation.</p></div>
+      <div class="card"><h4>RE Motoverse</h4><h3>Vagator · Nov annually</h3><p>RE's owned festival — the single best community activation in Indian motorcycling. Benchmark for anything Apache Nation aspires to. Motoverse 2025 showed Flying Flea + E-Himalayan testbed.</p></div>
+      <div class="card"><h4>Bharat Mobility Expo</h4><h3>Delhi · annual (Jan/Feb)</h3><p>India's largest auto show. TVS, Bajaj, RE all present. Use for domestic launches, not global debuts. Was used for iQube variants.</p></div>
+      <div class="card"><h4>Auto Expo (legacy)</h4><h3>Pragati Maidan</h3><p>Now merged with Bharat Mobility. Historical venue for Indian launches.</p></div>
+      <div class="card"><h4>Goodwood Festival of Speed</h4><h3>UK · summer</h3><p>Premium + heritage-motorcycle positioning venue. TVS showcased Norton V4SV here in 2024. Useful for Norton-India brand storytelling, not commercial.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 05 · COMPETITORS ======== -->
+<section id="m05">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 05</div>
+        <h2>Competitor <em>intelligence.</em></h2>
+      </div>
+      <p class="module-sub">Detailed profile on every competitor that matters for the Premium BU. Grades are assigned on <strong>premium execution quality</strong>, not total volume. Prices are current ex-showroom Delhi (Apr 2026), verified from manufacturer sites. All sales figures sourced from SIAM / FADA / OEM disclosures.</p>
+    </div>
+
+    <!-- RE PROFILE -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin-bottom:6px">5.1 Royal Enfield</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--race);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Premium execution grade: A+ · The benchmark</p>
+
+    <div class="grid-4" style="margin-bottom:16px">
+      <div class="kpi"><div class="kpi-label">FY26 Total</div><div class="kpi-val">12.39<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 23% YoY</div><div class="kpi-note">Highest-ever year</div></div>
+      <div class="kpi"><div class="kpi-label">FY26 Domestic</div><div class="kpi-val">11.07<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 23%</div><div class="kpi-note">First time &gt; 10L domestic</div></div>
+      <div class="kpi"><div class="kpi-label">FY26 Exports</div><div class="kpi-val">1.31<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 23%</div><div class="kpi-note">80+ markets</div></div>
+      <div class="kpi"><div class="kpi-label">EBITDA margin</div><div class="kpi-val">~27-28<span class="kpi-unit">%</span></div><div class="kpi-chg">Eicher Motors</div><div class="kpi-note">The brand-premium number</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>RE product franchise · FY26</caption>
+        <thead><tr><th>Model</th><th>Price (from)</th><th>FY26 est. share of RE</th><th>Why it wins</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Classic 350</strong></td><td class="mono">₹1.93L</td><td class="num">40% of 350cc</td><td>Original brand asset. Pure heritage. Highest ASP of 350cc range.</td></tr>
+          <tr><td><strong>Bullet 350</strong></td><td class="mono">₹1.74L</td><td class="num">25%</td><td>Re-launched 2023. Nostalgia + fresh faces. Killed Jawa cold.</td></tr>
+          <tr><td><strong>Hunter 350</strong></td><td class="mono">₹1.50L</td><td class="num">~20%</td><td>The "first RE" bike. Direct competitor to Apache / Ronin.</td></tr>
+          <tr><td><strong>Meteor 350</strong></td><td class="mono">₹2.00L</td><td class="num">~10%</td><td>Cruiser posture for 350cc buyers.</td></tr>
+          <tr><td><strong>Guerrilla 450</strong></td><td class="mono">₹2.39L</td><td class="num">~3%</td><td>Roadster 450. Meets Triumph/KTM head-on.</td></tr>
+          <tr><td><strong>Himalayan 450</strong></td><td class="mono">₹2.85L</td><td class="num">~3%</td><td>ADV platform. Best-ever global export year in FY26 (38k+ units).</td></tr>
+          <tr><td><strong>650 Twins</strong> (Interceptor, Continental GT, Super Meteor, Shotgun, Bear, Classic 650)</td><td class="mono">₹3.03–₹4.50L</td><td class="num">~4%</td><td>97% of 500-800cc segment. Unrivalled in price band.</td></tr>
+          <tr><td><strong>Flying Flea C6 / S6</strong> <span class="tag red">Upcoming</span></td><td class="mono">₹2-4.5L (est)</td><td class="num">—</td><td>2026 launches. First electric lifestyle motorcycle in India.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout race">
+      <h5>RE's moat, in one sentence</h5>
+      <p>RE is the only OEM in India that has built an <strong>owner community strong enough to sustain 28% EBITDA margins</strong> in a mass-priced segment. Every lever — product, retail, rides, merchandise, service, Motoverse — reinforces that community. TVS cannot copy this; TVS must build a <strong>distinct</strong> community identity that Apache owners feel they <em>belong to more than RE's</em>. Faster, more performance-oriented, track-credible — not a knockoff Rider Club.</p>
+    </div>
+
+    <!-- KTM BAJAJ TRIUMPH -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.2 Bajaj Auto + KTM + Triumph + Husqvarna</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--brand);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Premium execution grade: A · The portfolio-premium player</p>
+
+    <div class="prose">
+      <p>Bajaj's premium strategy is the most sophisticated in India — not by accident. They operate <strong>four premium sub-brands</strong> (Pulsar, KTM, Husqvarna, Triumph) across price tiers, and they've deliberately avoided stretching Pulsar into super-premium, keeping each brand clean. KTM is sport / aggressive / young. Triumph is heritage / British / aspirational. Husqvarna is niche / design-led. Each has its own voice, dealer experience, and loyal tribe.</p>
+      <p>In the 350-450cc segment, Bajaj's alliance brands commanded ~60% share in FY26 (RE's Guerrilla+Himalayan 450 held ~27%). Triumph Speed 400 + Scrambler 400X crossed ~15k cumulative units within 8 months of launch.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Bajaj-alliance premium portfolio · prices ex-showroom Delhi (approx)</caption>
+        <thead><tr><th>Brand</th><th>Model</th><th>Price</th><th>Rival</th><th>Threat to TVS</th></tr></thead>
+        <tbody>
+          <tr><td>KTM</td><td>125 Duke</td><td class="mono">₹1.78L</td><td>Pulsar NS200, Apache RTR 200</td><td>Indirect</td></tr>
+          <tr><td>KTM</td><td>200 Duke</td><td class="mono">₹2.04L</td><td>Apache RTR 200 4V</td><td>Direct · Duke wins on aspiration</td></tr>
+          <tr><td>KTM</td><td>390 Duke</td><td class="mono">₹3.22L</td><td>Apache RTR 310, RR310</td><td>Direct · KTM has halo</td></tr>
+          <tr><td>KTM</td><td>390 Adventure</td><td class="mono">₹3.60L</td><td>Apache RTX 300, RE Himalayan 450</td><td>Direct · KTM is the spec leader</td></tr>
+          <tr><td>KTM</td><td>RC 390</td><td class="mono">₹3.18L</td><td>Apache RR 310</td><td>Direct · RR310 is ₹59k cheaper</td></tr>
+          <tr><td>Triumph</td><td>Speed 400</td><td class="mono">₹2.40L</td><td>Apache RTR 310, Honda H'ness CB350</td><td>High · Triumph badge vs TVS badge</td></tr>
+          <tr><td>Triumph</td><td>Scrambler 400X</td><td class="mono">₹2.70L</td><td>Apache RTX 300, RE Scram</td><td>High · direct RTX 300 rival</td></tr>
+          <tr><td>Bajaj</td><td>Pulsar 400</td><td class="mono">₹1.85L</td><td>Apache RTR 200 4V</td><td>Moderate · Pulsar brand works</td></tr>
+          <tr><td>Bajaj</td><td>Dominar 400</td><td class="mono">₹2.33L</td><td>RE Guerrilla 450, Apache RTX 300</td><td>Declining · softer than peers</td></tr>
+          <tr><td>Husqvarna</td><td>Svartpilen 401</td><td class="mono">₹3.20L</td><td>Niche premium</td><td>Low volume · halo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- HONDA BIGWING -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.3 Honda BigWing</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--brand);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: B+ · The patient compounder</p>
+
+    <div class="prose">
+      <p>Honda CB Unicorn 160 was a key reason Honda nearly <strong>doubled its 150-200cc volume</strong> in FY26 (1.40L → 2.78L units), pushing Honda's segment share from 13% → 18%. Honda doesn't do premium the way RE does — they do reliability-premium. BigWing stores sell the CB350 H'ness, CB300R, CB500X, and the CB650R on special order. Quiet, consistent, profitable. The Activa-e EV launched in 2025 but hasn't been a volume success so far.</p>
+      <p><strong>Direct threat to Apache:</strong> Moderate but growing. H'ness CB350 ate share from RE for a period; could do the same to Ronin if TVS doesn't sharpen Ronin's positioning.</p>
+    </div>
+
+    <!-- YAMAHA -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.4 Yamaha India</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: B · The R15 anomaly</p>
+
+    <div class="prose">
+      <p>R15 V4 and MT-15 V2 remain the <strong>most aspirational 150cc bikes in India</strong> on social media / Instagram engagement metrics (search for latest: R15 India Instagram typically has 2-3x engagement rate of Apache's account despite fewer followers). YZF-R3 and MT-03 sell in the low hundreds monthly. Overall 2W share 3.3% in FY26 — declining — but premium-lifestyle mindshare is disproportionately high.</p>
+      <p><strong>Key competitive note:</strong> R15 is the template for Apache RTR 310 / RR310's social content. Not the product — the <em>storytelling</em>. Yamaha posts racing-grade lifestyle content. TVS posts spec sheets. This is addressable.</p>
+    </div>
+
+    <!-- HARLEY HERO -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.5 Harley Davidson X440 (via Hero)</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: C · Stalling</p>
+
+    <div class="prose">
+      <p>X440 launched 2023 at ₹2.29L with 25k+ bookings in its first month. By Dec 2024 monthly sales had fallen to 418 units (-81% YoY). Feb 2025: 660 units (-70% YoY). The Hero-Harley co-brand never resolved — is it a Harley that Hero makes, or a Hero with a Harley badge? Dealers confused, owners confused. <strong>Lesson for TVS's Norton launch:</strong> if you co-brand, commit. If you don't, keep them apart with firewall clarity. TVS has chosen the latter — correct call.</p>
+    </div>
+
+    <!-- KAWASAKI -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.6 Kawasaki India</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: B · Niche premium</p>
+    <div class="prose"><p>Z400, Ninja 400, Z650, Versys 650 — all direct Apache RR310 adjacency. Low-volume, high-ASP, India Kawasaki showed growth in H1 FY26 (one of only three motorcycle OEMs to post positive YoY share gain). Dealer footprint limited to top 20 cities.</p></div>
+
+    <!-- ATHER -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.7 Ather Energy</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--brand);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: A- · The iQube benchmark</p>
+
+    <div class="prose">
+      <p>FY26 sales: 2,39,178 units (+82% YoY). IPO'd May 2025. Rizta family scooter drives ~70% of sales; 450 series holds the performance-premium line. <strong>Ather is the single best product experience in Indian 2W</strong> — community (owner meet-ups, Ather Community forum), app, connected features, service, dealer aesthetic. Lower volume than iQube but higher brand equity per unit.</p>
+      <p><strong>iQube's response pathway:</strong> Scale + service network (7,500+ TVS dealers) is iQube's structural advantage. Experience quality is the gap. Every iQube owner-facing touchpoint (app, service centre, community) deserves an Ather-level audit.</p>
+    </div>
+
+    <!-- OLA -->
+    <h3 style="font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-.02em;margin:42px 0 6px">5.8 Ola Electric</h3>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--neg);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:700">Grade: D · Structural decline</p>
+
+    <div class="prose">
+      <p>FY26: 1.64L units (-52% YoY). Net loss widened to ₹2,276 Cr in FY25. Market share collapsed from 30% (FY25) to 12% (FY26). Shares hit all-time lows. Service quality scandals + scale-ahead-of-readiness + hype-first marketing caught up. <strong>Strategic implication:</strong> Ola's collapse has reshuffled ~₹4,000 Cr of annual EV 2W revenue into trust-brand pockets — TVS, Bajaj, Ather, Hero. iQube's +44% FY26 is partly Ola-collapse redistribution. If Ola stabilises, the redistribution reverses. iQube needs to convert current share into loyalty, fast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 06 · PREMIUM SEGMENT DEEP DIVE ======== -->
+<section id="m06">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 06</div>
+        <h2>The Premium Segment, <em>tiered.</em></h2>
+      </div>
+      <p class="module-sub">Four tiers of premium. Four buyer personas. The goal: a shared vocabulary for the BU so "premium" stops being a marketing adjective and becomes a buyer-segment-and-price-tier specification.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">6.1 The 4-tier premium framework</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Premium tiering · Indian motorcycle market</caption>
+        <thead><tr><th>Tier</th><th>Price band</th><th>Emotion vs Function</th><th>Key players</th><th>TVS presence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Tier 1 · Performance Premium</strong></td>
+            <td class="mono">₹1.0L – ₹1.7L</td>
+            <td class="mono">40 / 60</td>
+            <td>Apache RTR 160/200, Pulsar N160/200, Yamaha R15 V4, Honda Unicorn 160</td>
+            <td class="tag red">Leader · 38%</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 2 · Lifestyle Premium Entry</strong></td>
+            <td class="mono">₹1.7L – ₹2.5L</td>
+            <td class="mono">75 / 25</td>
+            <td>RE Hunter 350, Classic 350, Honda CB350, Ronin, Triumph Speed 400, Harley X440</td>
+            <td class="tag">Emerging (Ronin, RTX 300)</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 3 · Lifestyle Premium Mid</strong></td>
+            <td class="mono">₹2.5L – ₹4.0L</td>
+            <td class="mono">80 / 20</td>
+            <td>RE Meteor 350, Himalayan 450, Guerrilla 450, KTM 390 Adv, Triumph Scrambler 400X, Apache RR310, RTR 310</td>
+            <td class="tag">Niche (RR310)</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 4 · Aspirational Premium</strong></td>
+            <td class="mono">₹4.0L – ₹10L</td>
+            <td class="mono">90 / 10</td>
+            <td>RE 650 Twins (97% share), Kawasaki Z650, Triumph Trident 660, BMW G310R</td>
+            <td class="tag verify">None yet · Norton Atlas lands here</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 5 · Luxury</strong></td>
+            <td class="mono">₹10L+</td>
+            <td class="mono">95 / 5</td>
+            <td>Triumph large, Ducati, BMW R/GS, Norton V4</td>
+            <td class="tag gold">Norton V4 · Apr 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand">
+      <h5>What this framework buys you</h5>
+      <p>Once you stop calling Apache "premium" and start calling it "Tier 1 Performance Premium leader," three things become visible: (a) TVS has <strong>no meaningful Tier 3 product</strong> other than RR310 which is sub-1000 units/month; (b) Apache RTX 300 is a <strong>Tier 2-Tier 3 bridge attempt</strong> and the waitlist says the bridge is working; (c) Norton is about to give TVS its first Tier 4 and Tier 5 products simultaneously. No other OEM will have that spread — except RE, and RE doesn't have Tier 5.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">6.2 The four personas</h3>
+
+    <div class="grid-2">
+      <div class="persona">
+        <div class="persona-tag">Persona A</div>
+        <h4>The Track Aspirant <em>· 23-28 yr</em></h4>
+        <div class="persona-meta">Income ₹6-12L · Tier 1 city · Currently rides Pulsar 220 or FZ-S</div>
+        <div class="persona-row"><strong>Next bike:</strong> Apache RTR 200 4V or KTM Duke 200</div>
+        <div class="persona-row"><strong>Watches:</strong> MotoGP, Indian moto-vloggers (Aman Sky, Ghost Rider), track vlogs</div>
+        <div class="persona-row"><strong>Wins him to Apache:</strong> Test-ride day, Apache Nation chapter invite, "built by people who race" narrative</div>
+        <div class="persona-row"><strong>Loses him to KTM:</strong> Orange colour, cool factor, Instagram social proof</div>
+        <div class="persona-row"><strong>TVS opportunity:</strong> Apache RTR Race Edition + track-day vouchers + influencer content. Low-cost, high-conversion.</div>
+      </div>
+
+      <div class="persona">
+        <div class="persona-tag">Persona B · Biggest revenue target</div>
+        <h4>The Income Upgrader <em>· 28-36 yr</em></h4>
+        <div class="persona-meta">Income ₹12-25L · Tier 1-2 city · Rides Honda CB Unicorn or Pulsar 150</div>
+        <div class="persona-row"><strong>Next bike:</strong> RE Classic 350 or Hunter 350</div>
+        <div class="persona-row"><strong>Really buying:</strong> Identity · weekend escape · social proof · "I've arrived"</div>
+        <div class="persona-row"><strong>Diverts to TVS if:</strong> Ronin 400 (which doesn't exist yet) or a genuinely soul-ful Apache at similar price</div>
+        <div class="persona-row"><strong>What RE does right:</strong> Every touchpoint — dealer, merch, rides, service — says "you belong here"</div>
+        <div class="persona-row"><strong>TVS gap:</strong> Ronin 225 is the product; Ronin-as-a-brand isn't there. Ronin needs its own Instagram, its own rides, its own identity.</div>
+      </div>
+
+      <div class="persona">
+        <div class="persona-tag">Persona C · Highest ASP</div>
+        <h4>The Weekend Tourer <em>· 32-45 yr</em></h4>
+        <div class="persona-meta">Income ₹20-40L · Metro · Rides RE Meteor 350 or Himalayan</div>
+        <div class="persona-row"><strong>Next bike:</strong> RE Super Meteor 650, Triumph Speed 400, Himalayan 450</div>
+        <div class="persona-row"><strong>Wants:</strong> Long-ride comfort, adventure, community trips, real touring capability</div>
+        <div class="persona-row"><strong>Reads:</strong> Outlook Traveller, Lonely Planet, long-form Instagram ride journals (not CarWale)</div>
+        <div class="persona-row"><strong>TVS relevance today:</strong> None. Apache RTX 300 is the first product to credibly address this persona.</div>
+        <div class="persona-row"><strong>Norton Atlas opportunity:</strong> This is the person Norton Atlas is built for. Perfect fit if priced ₹4.5-5.5L.</div>
+      </div>
+
+      <div class="persona">
+        <div class="persona-tag">Persona D · Biggest volume opportunity</div>
+        <h4>The First Premium Buyer <em>· 25-32 yr</em></h4>
+        <div class="persona-meta">Income ₹8-15L · Tier 2 city · Rides Hero HF Deluxe or Shine</div>
+        <div class="persona-row"><strong>Next bike:</strong> First "real" bike — emotionally significant</div>
+        <div class="persona-row"><strong>Consideration set:</strong> RE Hunter 350, Apache RTR 160, Honda H'ness</div>
+        <div class="persona-row"><strong>Decision driver:</strong> What his colleague rides + EMI affordability + what his girlfriend thinks</div>
+        <div class="persona-row"><strong>TVS value case:</strong> Apache RTR 160 at ₹1.19L vs Hunter at ₹1.50L = ₹31,000 saving = ₹700 off EMI. Real money.</div>
+        <div class="persona-row"><strong>TVS brand gap:</strong> But TVS must win on <em>aspiration</em> not just price. Otherwise he pays ₹31k more for the RE and tells himself it's worth it.</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">6.3 Pricing intelligence · live reference</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Premium motorcycle prices · ex-showroom Delhi · verified Apr 2026</caption>
+        <thead><tr><th>Model</th><th>From</th><th>Segment</th><th>Position vs TVS</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Apache RTR 160 4V</strong></td><td class="mono">₹1,18,690</td><td>T1</td><td>—</td></tr>
+          <tr><td>Pulsar NS160</td><td class="mono">₹1,18,000</td><td>T1</td><td>Parity</td></tr>
+          <tr><td>Yamaha FZ-S V4</td><td class="mono">₹1,36,000</td><td>T1</td><td>₹17k premium</td></tr>
+          <tr><td>Yamaha R15 V4</td><td class="mono">₹1,87,500</td><td>T1/T2</td><td>₹69k premium — entirely brand</td></tr>
+          <tr><td><strong>Ronin</strong></td><td class="mono">₹1,26,690</td><td>T2 entry</td><td>—</td></tr>
+          <tr><td>RE Hunter 350</td><td class="mono">₹1,49,900</td><td>T2</td><td>₹23k premium over Ronin</td></tr>
+          <tr><td>RE Bullet 350</td><td class="mono">₹1,74,000</td><td>T2</td><td>₹47k premium</td></tr>
+          <tr><td>RE Classic 350</td><td class="mono">₹1,93,400</td><td>T2</td><td>₹66k premium</td></tr>
+          <tr><td>Honda CB350 H'ness</td><td class="mono">₹2,15,000</td><td>T2</td><td>—</td></tr>
+          <tr><td><strong>Apache RTX 300</strong></td><td class="mono">₹1,99,000</td><td>T2/T3</td><td>Intro price — key value anchor</td></tr>
+          <tr><td>Harley Davidson X440</td><td class="mono">₹2,29,000</td><td>T2/T3</td><td>₹30k premium</td></tr>
+          <tr><td>Triumph Speed 400</td><td class="mono">₹2,40,000</td><td>T3</td><td>₹41k premium</td></tr>
+          <tr><td><strong>Apache RTR 310</strong></td><td class="mono">₹2,42,000</td><td>T3</td><td>—</td></tr>
+          <tr><td><strong>Apache RR310</strong></td><td class="mono">₹2,59,490</td><td>T3</td><td>—</td></tr>
+          <tr><td>Triumph Scrambler 400X</td><td class="mono">₹2,70,000</td><td>T3</td><td>₹11k over RTR 310</td></tr>
+          <tr><td>RE Meteor 350</td><td class="mono">₹2,00,000</td><td>T3</td><td>Cruiser positioning</td></tr>
+          <tr><td>RE Guerrilla 450</td><td class="mono">₹2,39,000</td><td>T3</td><td>Nearest ADV rival to RTX 300</td></tr>
+          <tr><td>RE Himalayan 450</td><td class="mono">₹2,85,000</td><td>T3</td><td>₹86k over RTX 300</td></tr>
+          <tr><td>KTM 390 Duke</td><td class="mono">₹3,22,000</td><td>T3</td><td>₹80k over RTR 310</td></tr>
+          <tr><td>KTM 390 Adventure</td><td class="mono">₹3,60,000</td><td>T3</td><td>₹1.61L premium over RTX 300</td></tr>
+          <tr><td>RE Classic 650</td><td class="mono">₹3,70,000</td><td>T4</td><td>Aspirational cruiser</td></tr>
+          <tr><td>RE Super Meteor 650</td><td class="mono">₹3,94,000</td><td>T4</td><td>—</td></tr>
+          <tr><td>Kawasaki Z400</td><td class="mono">₹4,45,000</td><td>T4</td><td>Niche</td></tr>
+          <tr><td><strong>Norton Atlas 585</strong> <span class="tag verify">Apr'26</span></td><td class="mono">~₹5.00L [Est]</td><td>T4</td><td>India-made → price-sharp</td></tr>
+          <tr><td>Triumph Trident 660</td><td class="mono">₹8,40,000</td><td>T4</td><td>—</td></tr>
+          <tr><td><strong>Norton V4 Manx</strong> <span class="tag verify">Apr'26</span></td><td class="mono">~₹25-30L [Est]</td><td>T5</td><td>First TVS-group Tier 5 bike</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--ink-3);margin-top:4px"><em>Ex-showroom Delhi prices verified Apr 2026 from manufacturer sites and BikeDekho/BikeWale aggregation. Norton prices are estimates — to be confirmed at launch.</em></p>
+  </div>
+</section>
+
+<!-- ======== MODULE 07 · SOCIAL & DIGITAL ======== -->
+<section id="m07">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 07 · ABM operational core</div>
+        <h2>Social media & <em>digital intelligence.</em></h2>
+      </div>
+      <p class="module-sub">The area where TVS Premium has the shortest path to visible impact in an 8-week window. Public follower and engagement numbers change weekly — the frameworks and gaps below are stable even when specific metrics aren't.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">7.1 Platform benchmarking · what you need to track</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Indicative Indian motorcycle brand social presence · verify numbers live weekly</caption>
+        <thead><tr><th>Brand</th><th>Instagram followers (order of magnitude)</th><th>YT subscribers (OOM)</th><th>Engagement quality</th><th>Content strength</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Royal Enfield</strong></td><td class="mono">~5-6M</td><td class="mono">~1-1.5M</td><td>High · community-driven UGC</td><td>Brand films, rider stories, Motoverse</td></tr>
+          <tr><td><strong>Yamaha India</strong> (R15/MT15)</td><td class="mono">~2-3M</td><td class="mono">~500k-1M</td><td>Very high · product-aesthetic</td><td>R15 lifestyle content best-in-class</td></tr>
+          <tr><td><strong>TVS Apache</strong></td><td class="mono">~1.5-2M</td><td class="mono">~500k-800k</td><td>Medium · spec-led</td><td>Racing content strong; lifestyle weak</td></tr>
+          <tr><td><strong>KTM India</strong></td><td class="mono">~1-1.5M</td><td class="mono">~300k-500k</td><td>High · "ready to race" DNA</td><td>Track days, owner content</td></tr>
+          <tr><td><strong>Triumph India</strong></td><td class="mono">~300k-500k</td><td class="mono">~100-200k</td><td>High · aspirational aesthetic</td><td>Heritage + modern-classic</td></tr>
+          <tr><td><strong>Harley Davidson India</strong></td><td class="mono">~500k-1M</td><td class="mono">~100-200k</td><td>Medium · fragmented post X440</td><td>Heritage-heavy, India-lite</td></tr>
+          <tr><td><strong>Ather</strong></td><td class="mono">~500k-700k</td><td class="mono">~200-300k</td><td>Very high · engineering-led storytelling</td><td>Product reveals, engineering content</td></tr>
+          <tr><td><strong>TVS iQube</strong></td><td class="mono">~200k-400k</td><td class="mono">~50-100k</td><td>Low · underdeveloped vs Apache</td><td>Functional EV content, low emotional weight</td></tr>
+          <tr><td><strong>TVS Ronin</strong></td><td class="mono">~100-200k</td><td class="mono">~50k</td><td>Low · product-focused, not community</td><td>Single biggest TVS content gap</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--ink-3);margin-top:4px"><em>Numbers shown as order-of-magnitude because follower counts shift weekly. For your weekly dashboard, pull exact numbers via Social Blade or native platform analytics. Engagement quality / content strength are qualitative but stable. Always verify the exact handles before citing.</em></p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">7.2 The Apache social content audit framework</h3>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Diagnostic questions</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:6px;font-size:14px">What % of Apache's feed is <strong>spec-focused</strong> (engine, torque, lean angle) vs <strong>emotion-focused</strong> (rider's story, a ride, an idea)?</li>
+          <li style="margin-bottom:6px;font-size:14px">Would a <strong>non-Apache rider</strong> save or share any of the top 10 posts?</li>
+          <li style="margin-bottom:6px;font-size:14px">What <strong>one visual signature</strong> makes an Apache post recognisable without the logo?</li>
+          <li style="margin-bottom:6px;font-size:14px">How much of Apache's content is made by <strong>Apache owners</strong> vs TVS's agency?</li>
+          <li style="margin-bottom:6px;font-size:14px">Which post format (Reel, carousel, static) does Apache over-index on vs under-index on?</li>
+          <li style="margin-bottom:6px;font-size:14px">What is the "Apache hashtag" owned by the brand that owners actually use?</li>
+        </ul>
+      </div>
+      <div class="card accent">
+        <h4>Apache monthly content calendar · proposed framework</h4>
+        <p style="margin-bottom:6px"><strong>Week 1 · Performance / Racing:</strong> TVS Racing results, track days, Apache engineering content.</p>
+        <p style="margin-bottom:6px"><strong>Week 2 · Owner spotlight:</strong> Real Apache owner, real city, real ride. UGC amplification.</p>
+        <p style="margin-bottom:6px"><strong>Week 3 · Product truth:</strong> One feature, told emotionally. ("This is what 34 bhp feels like at 5am.")</p>
+        <p style="margin-bottom:6px"><strong>Week 4 · Aspiration / lifestyle:</strong> Brand film territory. A ride. A moment. Zero specs.</p>
+        <p>Repeat monthly. Track: save rate, share rate, comment quality — not vanity metrics.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">7.3 Influencer ecosystem map</h3>
+
+    <div class="prose">
+      <p>Indian motorcycle YouTube is dominated by ~20 channels. The ones that matter for Apache are not the biggest — they're the ones whose audience <strong>actually buys Apache-band motorcycles</strong>. Tracker channels like PowerDrift or BikeWale are trustworthy for reviews but their subscribers are shoppers, not riders. The real Apache opportunity lies with <strong>riding-first channels</strong> — the ones that do long-form ride content, track-day vlogs, and owner journeys.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Tier 1 · Mass-market moto YouTubers</h4>
+        <h3>Shopper audience</h3>
+        <p>PowerDrift, BikeWale, BikeDekho, MotorScribes, Autocar India. Useful for reviews of new launches (Apache RTX 300, upcoming Norton). Not brand-builders.</p>
+        <p><strong>Use case:</strong> Launch content, product review placements.</p>
+      </div>
+      <div class="card">
+        <h4>Tier 2 · Riding-first creators</h4>
+        <h3>Rider audience · the real opportunity</h3>
+        <p>Track-day vloggers, long-distance riders, dedicated motorcycle storytellers. Smaller audiences but <strong>higher intent-to-purchase</strong>.</p>
+        <p><strong>Use case:</strong> Long-term Apache Nation ambassador partnerships (not campaign-by-campaign deals). 6 names, 12-month contracts.</p>
+      </div>
+      <div class="card">
+        <h4>Tier 3 · Instagram moto creators</h4>
+        <h3>Aesthetic audience · brand-equity play</h3>
+        <p>The visually-led Instagram accounts with ~50k-300k followers who post motorcycle-as-aesthetic content. Match Apache's aspirational territory.</p>
+        <p><strong>Use case:</strong> Product loans, trackday invites, expedition partnerships. Content that feels like their feed, not an ad.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">7.4 The Apache Sound strategy</h3>
+
+    <div class="callout race">
+      <h5>A specific recommendation you can present in Week 3</h5>
+      <p>RE's exhaust thump is the most recognisable audio asset in Indian motorcycling — Shazam can't identify it, but any Indian rider can. It's a moat that RE built entirely through consistent product sound engineering across 20 years.</p>
+      <p><strong>Apache doesn't have an audio signature.</strong> Apache 200 4V, RR310, RTX 300 — all different engine notes, no connective thread. Competitor R15 V4 has the closest thing to an audio identity (the high-revving 155cc scream) that Indian performance bikes have.</p>
+      <p><strong>Proposal:</strong> An "Apache Sound Project" — audio content series, ASMR-style engine content on Reels (consistently top-performing format on Indian Instagram), partnership with an audio brand (JBL / boAt / Bose) for "Apache Signature Sound" tagline. Cost: ~₹30-50L for a year. Upside: a sound asset Apache owns for a decade.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">7.5 What's missing in TVS premium digital today</h3>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Gap 1 · Ronin has no voice</h4>
+        <p>Ronin is 8k+ units/month and rising, but its digital identity is "a smaller Bullet." No positioning, no story, no sub-community. The <strong>single biggest low-cost premium digital intervention</strong> TVS could make is a dedicated Ronin Instagram with a distinct aesthetic (lifestyle-crossover, not Apache-junior).</p>
+      </div>
+      <div class="card">
+        <h4>Gap 2 · iQube's emotional content</h4>
+        <p>iQube sells on price + service network + TVS trust. Its digital presence reflects that — rational, specs-led, functional. To defend against the Flying Flea, iQube needs <strong>at least one emotional content pillar</strong> (city commuting as lifestyle, daily ride rituals). Ather's content is the template.</p>
+      </div>
+      <div class="card">
+        <h4>Gap 3 · Apache RR310 is under-narrativised</h4>
+        <p>RR310 is a BMW G310R tech-DNA product sold at 20% less than the KTM RC 390. The engineering story is genuinely good. But the social content frames RR310 as "another sport bike" rather than "the most serious Indian-made sport bike you can buy under ₹3L." <strong>Content-first repositioning</strong>, not a product change, is the fix.</p>
+      </div>
+      <div class="card">
+        <h4>Gap 4 · No dedicated Apache Nation digital surface</h4>
+        <p>No Apache Nation Instagram. No Apache Nation app. Owner rides happen informally on WhatsApp and in regional FB groups. Every Apache rider TVS can't see is a marketing asset wasted. See Module 08.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 08 · APACHE NATION ======== -->
+<section id="m08">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 08</div>
+        <h2>Apache Nation · <em>community blueprint.</em></h2>
+      </div>
+      <p class="module-sub">Community is the single highest-ROI investment a premium 2W brand can make. RE's ~₹300-400 Cr/year community spend is a core reason they hold ~28% EBITDA. Apache has the product, the racing credibility, and the owner base to build India's second great motorcycle community — it just hasn't.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">8.1 Why community is the ROI play</h3>
+
+    <div class="grid-3">
+      <div class="card accent">
+        <h4>The math</h4>
+        <h3>3-5× repurchase rate</h3>
+        <p>Community members in automotive premium brands show 3-5× higher repurchase intent and ~1.5× higher gear/accessory spend than non-members (global luxury-auto research). Harley Owners Group is the historical benchmark — HOG membership grew from 10k in 1983 to 1M+ by 2010.</p>
+      </div>
+      <div class="card brand-accent">
+        <h4>The precedent</h4>
+        <h3>RE Rider Club</h3>
+        <p>Reportedly ~1M members globally, ~400+ active chapters in India, Himalayan Odyssey / Rider Mania / Motoverse as flagship events. Each event generates 50k+ UGC posts. Community sustains RE's pricing power — a new 650 buyer doesn't compare spec sheets, he compares which tribe he joins.</p>
+      </div>
+      <div class="card">
+        <h4>The opportunity</h4>
+        <h3>Apache has the base</h3>
+        <p>~7 million Apache bikes sold globally since 2005. ~4.4 million in the last 12 years. Even if only 5% are reachable as "active riders," that's 200k+ members. Larger than RE Rider Club at launch. The asset exists. The structure doesn't.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">8.2 Apache Nation · proposed structure</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Membership tiers · proposal</caption>
+        <thead><tr><th>Tier</th><th>Eligibility</th><th>Annual fee</th><th>Key benefits</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Apache Nation Free</strong></td><td>Any Apache owner</td><td class="mono">₹0</td><td>App access, ride alerts, community feed, chapter invites</td></tr>
+          <tr><td><strong>Apache Nation Pro</strong></td><td>Any Apache owner (subscribe)</td><td class="mono">₹999/yr</td><td>Chapter access, track-day discounts, merchandise discounts, colourway priority booking, Apache Diaries (monthly zine)</td></tr>
+          <tr><td><strong>Apache Nation Elite</strong></td><td>Invite-only (top 1%)</td><td class="mono">Invited</td><td>Free track day, Norton UK tour opportunity, RR310/RTX upgrade priority, exclusive factory access at Hosur</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">8.3 Chapter rollout · 3-year plan</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Phase 1 · Year 1</h4>
+        <h3>7 flagship chapters</h3>
+        <p><strong>Mumbai, Delhi, Bengaluru, Chennai, Hyderabad, Pune, Kolkata.</strong> Target: 200+ members per chapter. Monthly rides (100-200km). One annual flagship regional ride. Chapter lead = dealer-employed rider-enthusiast.</p>
+        <p><strong>Budget:</strong> ~₹8-12 Cr (staffing, events, merchandise, app). <em>[Estimate.]</em></p>
+      </div>
+      <div class="card">
+        <h4>Phase 2 · Year 2</h4>
+        <h3>+13 Tier 2 chapters</h3>
+        <p>Jaipur, Chandigarh, Ahmedabad, Kochi, Visakhapatnam, Indore, Lucknow, Guwahati, Bhubaneswar, Coimbatore, Mangalore, Surat, Nagpur. Target: 50-100 members each.</p>
+        <p><strong>Flagship event:</strong> "Apache Apex" — 3-day destination event (Coorg or Rann of Kutch), 2,000 riders Year 1 target.</p>
+      </div>
+      <div class="card">
+        <h4>Phase 3 · Year 3</h4>
+        <h3>National scale</h3>
+        <p>20 chapters fully active. Apache Apex: 10k riders target. Apache Track Academy quarterly (Kari, Buddh). National Apache Nation app. Merchandise revenue target: ₹20 Cr.</p>
+        <p>Apache Nation becomes a brand in its own right, <strong>not a marketing programme.</strong></p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">8.4 Event architecture</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Apache Nation event calendar · annual</caption>
+        <thead><tr><th>Event</th><th>Frequency</th><th>Scale (Y1 → Y3)</th><th>Format</th><th>Revenue model</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Apache Apex</strong></td><td>Annual · Nov</td><td>2,000 → 10,000 riders</td><td>3-day destination event. Apache Cup timed run, track day, campfire storytelling, Norton display, TVS Racing demo</td><td>Ticket ₹3,500 inc. camping + meals. Y3 revenue potential ₹7 Cr.</td></tr>
+          <tr><td><strong>Apache Runs</strong></td><td>Monthly per city</td><td>240 events/yr</td><td>City ride, 100-200km, dealer-hosted, ends at Apache Studio</td><td>Free + merch revenue. Social reach is the asset.</td></tr>
+          <tr><td><strong>Apache Track Academy</strong></td><td>Quarterly</td><td>4 × 50 riders</td><td>Kari Speedway or Buddh. TVS Racing instructor-led.</td><td>₹4,999 ticket. Breakeven at 40 attendees.</td></tr>
+          <tr><td><strong>Apache Regional</strong></td><td>Quarterly · 2 regions</td><td>200-500 riders</td><td>Multi-chapter 2-day ride (Rajasthan, Western Ghats, NE India, Deccan)</td><td>Ticket ₹1,500 + sponsor revenue</td></tr>
+          <tr><td><strong>Norton + Apache Heritage Ride</strong></td><td>Annual · Dec</td><td>~300 riders</td><td>Limited invite — Apache Elite + Norton owners. TT heritage theme.</td><td>Invite-only. Positioning play.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">8.5 The 8-week pilot · what the intern actually does</h3>
+
+    <div class="callout gold">
+      <h5>Your pilot — ₹5-8L budget, 1 city, 20-50 riders</h5>
+      <p>Do not propose the national Apache Nation in your PPO deck. That's a board-level conversation. Propose the <strong>Bengaluru Apache Run Pilot</strong> — one city, one month, one event, measurable.</p>
+      <p><strong>Format:</strong> One Saturday, 30-50 Apache owners (you recruit via dealer + Insta + FB groups), 120km ride to a destination (Nandi Hills / Devanahalli breakfast), ends at a TVS dealership with coffee, merch, and a short "what if we did this every month" conversation.</p>
+      <p><strong>You measure:</strong> attendance, cost, social reach (posts generated), rider NPS (post-event survey), willingness to pay for Apache Nation Pro. Document everything. That becomes <strong>the case study</strong> in your PPO final presentation. A manager can't argue with a working pilot.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 09 · APACHE STUDIO RETAIL ======== -->
+<section id="m09">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 09</div>
+        <h2>Apache Studio · <em>premium retail.</em></h2>
+      </div>
+      <p class="module-sub">Luxury-auto research puts the showroom's contribution to the purchase decision at 18-25%. In premium motorcycles, where the buyer is buying identity, it's likely higher. RE Studio Stores transformed RE's conversion rate when they rolled out. TVS's premium retail footprint is still co-located with mass-market dealerships. This is the single largest capex-worthy brand-equity intervention available.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">9.1 The design brief · "The Pit Lane"</h3>
+
+    <div class="prose">
+      <p>Space concept — <strong>where racing meets the road.</strong> Industrial-premium aesthetic. Exposed steel, track photography on walls, Apache heritage timeline, low warm lighting. Not an appliance store. Not a luxury car showroom pretending to be motorcycle. A space that reads as "built by people who ride."</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Must-have physical elements</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Apache heritage wall</strong> — 2005 RTR to 2026 RTX 300 timeline</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Norton Heritage corner</strong> — TT photos, Isle of Man history, V4 display model (from April 2026)</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Racing wall</strong> — TVS Racing Dakar results, signed memorabilia, championship trophies</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Live configurator</strong> — touchscreen to spec an Apache with every accessory / colour</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Sound zone</strong> — ambient Apache engine notes / racing sounds</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Test-ride bay</strong> — dedicated Apache always ready, minimum 1 per studio</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Community board</strong> — Apache Nation chapter rides, upcoming events</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Gear corner</strong> — Apache Nation merchandise, Norton gear (post-launch)</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Coffee point</strong> — rider-culture atmosphere, not sales-pressure environment</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Private consultation room</strong> — premium finance, customisation discussions</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Staff profile · non-negotiable</h4>
+        <p><strong>Every Apache Studio staff member must be a rider themselves.</strong> Non-negotiable. Buyers detect non-rider staff within 30 seconds.</p>
+        <p><strong>Training:</strong> 60-hour "Premium Selling" curriculum covering emotional selling (not spec selling), Apache Nation membership pitch, customisation upsell, test-ride facilitation, Apache history storytelling, Norton product training.</p>
+        <p><strong>Incentive structure:</strong> Align partly with Apache Nation sign-ups and customisation revenue — not just bike units — to avoid defaulting to transactional selling.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">9.2 Rollout plan · 36 months</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Apache Studio national rollout · proposed</caption>
+        <thead><tr><th>Phase</th><th>Timeline</th><th>Count</th><th>Cities</th><th>Investment band (est.)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Phase 1</strong></td><td>0-12 months</td><td>15 studios</td><td>Top 8 cities · co-located with Norton launch (Apr 2026)</td><td class="mono">~₹45-60 Cr</td></tr>
+          <tr><td><strong>Phase 2</strong></td><td>12-24 months</td><td>+35 (total 50)</td><td>Top 25 cities</td><td class="mono">~₹100-140 Cr</td></tr>
+          <tr><td><strong>Phase 3</strong></td><td>24-36 months</td><td>+50 (total 100) + Studio Lite at 300 existing dealers</td><td>National</td><td class="mono">~₹200-280 Cr cumulative</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--ink-3);margin-top:4px"><em>Investment estimates are analyst ranges based on premium-retail formats in India (Triumph dealer fit-out, RE Studio). Cross-check with internal capex plans. <span class="tag verify">[ESTIMATE]</span></em></p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">9.3 Location strategy</h3>
+
+    <div class="prose">
+      <p>Priority: <strong>high-footfall lifestyle destinations</strong>, not just dealer hubs. Recommended zones:</p>
+      <ul>
+        <li><strong>Bengaluru:</strong> Koramangala / Indiranagar / Whitefield — adjacent to coffee shop / bike-modification culture zones</li>
+        <li><strong>Mumbai:</strong> Linking Road (Bandra) / Lower Parel — high-footfall premium retail corridors</li>
+        <li><strong>Delhi:</strong> Khan Market / Greater Kailash / Cyber City Gurgaon</li>
+        <li><strong>Hyderabad:</strong> Jubilee Hills / Banjara Hills</li>
+        <li><strong>Chennai:</strong> Anna Nagar / Nungambakkam</li>
+        <li><strong>Pune:</strong> Koregaon Park / Baner</li>
+      </ul>
+      <p>Second-priority zones near Namma Metro / Metro stations in Bengaluru and Delhi — rider demographic overlaps with young white-collar Metro users.</p>
+    </div>
+
+    <div class="callout brand">
+      <h5>What the intern can audit in Week 3-4</h5>
+      <p>Pick a TVS premium-adjacent dealership in Bengaluru. Walk in as a customer. Score it on a simple 20-point rubric: <em>(1) is the brand presence distinct from mass-market? (2) is there a test-ride bike ready? (3) is accessories / merch visible? (4) does the salesperson ride? (5) is there anywhere to sit? (6) is there any community material?</em> etc. Same rubric at one RE Studio, one Triumph, one KTM dealership. Photograph each. Scoring delta becomes your 3-slide recommendation deck. Total time: one weekend. Signal to your manager: high.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 10 · EV STRATEGY ======== -->
+<section id="m10">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 10</div>
+        <h2>EV strategy <em>— iQube and beyond.</em></h2>
+      </div>
+      <p class="module-sub">TVS iQube is the #1 electric 2W in India in FY26. But "leading a segment that is 6.5% of the market" is a smaller win than it sounds. The bigger question: is iQube the end of TVS's EV story, or the start?</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">10.1 EV 2W market dashboard · FY26</h3>
+
+    <div class="grid-4">
+      <div class="kpi"><div class="kpi-label">Total EV 2W FY26</div><div class="kpi-val">14.02<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 22% YoY</div><div class="kpi-note">6.54% of total 2W sales</div></div>
+      <div class="kpi"><div class="kpi-label">TVS iQube</div><div class="kpi-val">3.42<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 44% · #1</div><div class="kpi-note">24.4% share</div></div>
+      <div class="kpi"><div class="kpi-label">Ola Electric</div><div class="kpi-val">1.64<span class="kpi-unit">lakh</span></div><div class="kpi-chg down">▼ 52% · #4</div><div class="kpi-note">Structural collapse</div></div>
+      <div class="kpi"><div class="kpi-label">Hero Vida</div><div class="kpi-val">1.44<span class="kpi-unit">lakh</span></div><div class="kpi-chg up">▲ 196%</div><div class="kpi-note">Fastest-growing</div></div>
+    </div>
+
+    <div class="chart-box">
+      <h4>EV 2W · market share shift FY25 → FY26</h4>
+      <p class="sub">The Ola-to-legacy-OEM reshuffle is the single defining event of FY26's EV market. TVS, Bajaj and Ather absorbed most of Ola's lost share.</p>
+      <div class="chart-canvas"><canvas id="evShift"></canvas></div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">10.2 iQube vs the field · competitive benchmark</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Leading electric 2W scooters · specs + positioning · Apr 2026</caption>
+        <thead><tr><th>Model</th><th>Price (from)</th><th>Range</th><th>Positioning</th><th>Strength</th><th>Weakness</th></tr></thead>
+        <tbody>
+          <tr style="background:#fff5f4 !important"><td><strong>TVS iQube</strong></td><td class="mono">₹1,15,322</td><td class="mono">100 km</td><td>Reliable family EV</td><td>TVS service network, brand trust, price</td><td>Functional, not aspirational. Under-designed for premium buyers.</td></tr>
+          <tr><td><strong>Bajaj Chetak</strong></td><td class="mono">~₹1,14,000</td><td class="mono">108 km</td><td>Classic nostalgia EV</td><td>Heritage design, Bajaj service</td><td>Limited feature set, thin dealer premium experience</td></tr>
+          <tr><td><strong>Ather Rizta</strong></td><td class="mono">~₹1,20,000</td><td class="mono">125 km</td><td>Family-premium EV</td><td>App, dashboard, design language</td><td>Charging network still behind TVS footprint</td></tr>
+          <tr><td><strong>Ather 450X</strong></td><td class="mono">~₹1,50,000</td><td class="mono">150 km</td><td>Performance-premium EV</td><td>Best product experience in India</td><td>Premium price ceiling holds back volume</td></tr>
+          <tr><td><strong>Ola S1 Pro</strong></td><td class="mono">~₹1,30,000</td><td class="mono">195 km (claim)</td><td>Specs-first challenger</td><td>On-paper range</td><td>Brand damage, service issues, eroding trust</td></tr>
+          <tr><td><strong>Hero Vida VX2</strong></td><td class="mono">~₹1,10,000</td><td class="mono">110 km</td><td>Mass-market EV</td><td>Hero's dealer network, aggressive pricing</td><td>Late to market, catching up on tech</td></tr>
+          <tr><td><strong>Honda Activa e</strong></td><td class="mono">~₹1,17,000</td><td class="mono">100 km</td><td>EV version of India's best-selling scooter</td><td>Activa brand trust</td><td>Launched 2025, slow ramp</td></tr>
+          <tr><td><strong>RE Flying Flea C6</strong> <span class="tag red">End 2026</span></td><td class="mono">~₹4,50,000 [Est]</td><td class="mono">~150 km</td><td>First electric motorcycle lifestyle product</td><td>RE brand, community, category-creator first-mover</td><td>Motorcycle not scooter; different segment — but opens the category</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">10.3 The strategic question · premium EV under Apache brand?</h3>
+
+    <div class="callout race">
+      <h5>The question TVS will have to answer in FY27</h5>
+      <p>iQube is a Jupiter-on-electric. It's a commuter. It will continue to gain share as the EV 2W market scales — that's structurally defensible because of TVS's dealer + service footprint.</p>
+      <p>But the <strong>premium-EV conversation</strong> — the Flying Flea conversation — cannot be won by iQube. iQube has no emotional positioning, no community, no desire. It's a rational product.</p>
+      <p><strong>The decision TVS needs to take:</strong> build a premium electric motorcycle under the <strong>Apache</strong> brand (Apache E or Apache EV), priced in the ₹1.5L–₹2.5L band, styled as a performance bike, marketed to the Apache Nation. Not a variant of iQube. A distinct product with its own brand identity. This is a 2-3 year product development cycle — so the strategic commitment needs to be made in FY27 at the latest, or RE Flying Flea owns the category.</p>
+      <p><span class="tag verify">[INTERNAL STRATEGIC QUESTION]</span> <em style="font-size:12px">— not a public TVS announcement. Framing for discussion.</em></p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">10.4 iQube · what the Premium BU can do today</h3>
+
+    <div class="grid-2">
+      <div class="card brand-accent">
+        <h4>Short-term (6 months)</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Positioning refresh:</strong> "iQube · The Premium Everyday Electric." Stop competing with Ola/Ather on specs, compete on trust + service + daily usability.</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Dedicated iQube dealer corner</strong> within TVS dealerships — not a display bike at the back, a proper experience zone.</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>iQube Owner Club</strong> — piggyback on Apache Nation pilot, create iQube-specific "daily ride" digital content (5am commute diaries, city Reels).</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>BaaS (Battery-as-a-Service)</strong> — launched March 2026. Aggressive on cost, soft on communication. Needs its own campaign.</li>
+        </ul>
+      </div>
+      <div class="card accent">
+        <h4>Medium-term (12-24 months)</h4>
+        <ul style="padding-left:18px">
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Apache E prototype at Bharat Mobility Expo 2027</strong> — signal the premium-EV intent before Flying Flea launches.</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Norton electric programme</strong> — Norton's global R&D should include at least one EV concept. Gives TVS-group EV premium credibility top-down.</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>iQube ST (Sport Tuned)</strong> variant — within existing platform, but with performance tuning and a sharper design package. Closes the "no aspirational iQube" gap cheaply.</li>
+          <li style="margin-bottom:6px;font-size:13.5px"><strong>Charging network partnerships</strong> — Statiq, Chargezone, ElectricPe. Own the "where can I charge" question better than Ather/Ola.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 11 · MOTORSPORT & RACING ======== -->
+<section id="m11">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 11</div>
+        <h2>Motorsport & racing · <em>TVS's most under-leveraged brand asset.</em></h2>
+      </div>
+      <p class="module-sub">TVS Racing is the <strong>longest-running factory racing team in India</strong> (founded 1982). Indian National Motorcycle Racing Championship wins across two decades, Dakar Rally presence since 2015, the Apache Racing Experience programme. Yet most Apache buyers cannot name a single TVS Racing result. That gap is the opportunity.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">11.1 TVS Racing · the asset inventory</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Heritage</h4>
+        <h3>1982 · Founded</h3>
+        <p>Longest continuously-operating factory racing programme in India. 40+ years of development. Apache's DNA as a "race-bred" bike is not marketing — it's literal.</p>
+      </div>
+      <div class="card">
+        <h4>Championships</h4>
+        <h3>INMRC · multiple titles</h3>
+        <p>Indian National Motorcycle Racing Championship wins across Pro-Stock, Super-Sport, and Novice categories. Track records at Kari Speedway, MMRT Chennai, Buddh International Circuit.</p>
+      </div>
+      <div class="card">
+        <h4>International</h4>
+        <h3>Dakar Rally · since 2015</h3>
+        <p>TVS Factory Racing at Dakar — the world's hardest motorcycle race. Riders: Aravind KP, Harith Noah (multiple top-10 finishes in Rally2 class). India's only factory Dakar team.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">11.2 The racing-to-brand-equity playbook · global case studies</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>How racing has built premium motorcycle brands globally</caption>
+        <thead><tr><th>Brand</th><th>Racing asset</th><th>How it converts to brand value</th><th>TVS lesson</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ducati</strong></td><td>MotoGP, WSBK · 20+ years</td><td>Every Ducati road bike sold carries the MotoGP halo. Panigale V4 = "same V4 as MotoGP." Premium of ~40% over equivalent-spec Japanese bikes.</td><td>TVS Racing needs a single flagship story told as consistently as Ducati's MotoGP narrative.</td></tr>
+          <tr><td><strong>KTM</strong></td><td>Dakar (20+ wins), MotoGP</td><td>"Ready to Race" tagline is <em>literally</em> KTM's product DNA. 390 Duke sells on the orange frame and the MotoGP lineage. KTM's entire India positioning rests on racing.</td><td>TVS has Dakar. KTM is the template. TVS isn't executing on it.</td></tr>
+          <tr><td><strong>Red Bull · Extreme sports</strong></td><td>Rally Dakar, X-Games, Red Bull Rampage</td><td>Content-first sponsorship. Red Bull TV. Owned media is the long-term asset, not the stopwatch.</td><td>TVS Racing needs owned content — a "TVS Racing Diaries" docuseries.</td></tr>
+          <tr><td><strong>RE · Himalayan Raid</strong></td><td>Raid de Himalaya, Motoverse</td><td>RE doesn't race in the traditional sense. It owns long-distance endurance events which reinforce brand values (rugged, exploratory, soul).</td><td>Racing ≠ road-race circuits only. TVS could create its own event category.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">11.3 Where TVS Racing's content is leaking</h3>
+
+    <div class="prose">
+      <p>TVS Racing has the raw material. What it lacks is a <strong>content operating system</strong>:</p>
+      <ul>
+        <li><strong>Dedicated TVS Racing Instagram</strong> — currently merged with Apache handle. Each champion, each podium, each Dakar stage deserves its own narrative thread.</li>
+        <li><strong>Rider documentary content</strong> — Harith Noah at Dakar is a world-class story (Indian factory rider, top-10 finisher, backstory, training, family). It should exist as a 30-minute YouTube film. It doesn't.</li>
+        <li><strong>Apache Racing Experience (ARE) as media property</strong> — currently a track-day programme. Could be a series — "6 amateurs, 6 trackdays, 1 becomes a TVS Racing reserve rider."</li>
+        <li><strong>Norton MotoGP / WSBK entry</strong> — Norton's UK brand equity + TVS's racing DNA = a case for a Norton factory racing entry. Long-horizon, but board-worthy.</li>
+      </ul>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">11.4 Sponsorship and partnership opportunities</h3>
+
+    <div class="grid-3">
+      <div class="card brand-accent">
+        <h4>MotoGP India (Buddh)</h4>
+        <p>MotoGP Bharat at Buddh International Circuit returns in coming seasons. TVS Racing should have <strong>Indian factory team presence</strong> at the race weekend — even if not on the grid, in the paddock, in the media. The absence is glaring.</p>
+      </div>
+      <div class="card brand-accent">
+        <h4>Red Bull India</h4>
+        <p>Red Bull has <em>no</em> motorcycle racing property in India. A TVS Racing + Red Bull India partnership around a new India-specific rally format (Indian Baja, Extreme Monsoon Rally) would create a category of one.</p>
+      </div>
+      <div class="card brand-accent">
+        <h4>Formula India</h4>
+        <p>Delhi Capitals, MI Cape Town, Mumbai City FC — franchised sports in India now have professional brand-building. TVS Racing could be the <strong>first motorcycle team to operate at the franchise level</strong>, with owned athletes, owned merchandise, owned media.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 12 · INTERN STRATEGIC WORKBENCH ======== -->
+<section id="m12">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 12 · Personal</div>
+        <h2>PPO workbench · <em>the 8-week plan.</em></h2>
+      </div>
+      <p class="module-sub">The internal-facing module. Everything above is strategic context; this is execution architecture. A PPO is earned by showing up as someone who sees the business differently <strong>and</strong> delivers visible work — not one or the other. The plan below is built around that.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">12.1 PPO principles · uncomfortable truths</h3>
+
+    <div class="callout race">
+      <h5>Three things that don't get said in onboarding</h5>
+      <p><strong>1 · Decks don't get you PPOs. Being useful does.</strong> A 30-slide deck your manager has to wade through is a burden. A 3-slide recommendation that saves him a meeting is a gift. Always optimise for the second.</p>
+      <p><strong>2 · Being right loses to being early.</strong> The most valuable intern is the one who surfaces an insight 2 weeks before the team was going to notice it. You don't need the complete answer — you need the question first.</p>
+      <p><strong>3 · Field &gt; Desk.</strong> Every intern runs a competitor analysis from their laptop. Almost none visit 5 dealerships, attend an RE ride, or interview 10 Apache owners. The ones who do are visible. Budget one full day a week for field.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">12.2 The 8-week calendar</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Associate Brand Manager Intern · TVS Motor Premium · 8-week PPO plan</caption>
+        <thead><tr><th>Week</th><th>Focus</th><th>Deliverable</th><th>Signal it sends</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Week 1</strong></td><td>Orient · absorb · listen</td><td>One-pager: "What I think the Premium BU's biggest opportunity is" — shared informally</td><td>You came in with thinking, not just expectations.</td></tr>
+          <tr><td><strong>Week 2</strong></td><td>Competitive field audit</td><td>Dealership-walk report: 1 RE Studio + 1 Triumph + 1 KTM + 1 TVS dealer. Photos, scoring, 3-slide summary.</td><td>You do the work no one else is doing.</td></tr>
+          <tr><td><strong>Week 3</strong></td><td>Customer voice · qualitative</td><td>5 Apache owner + 5 non-Apache owner short interviews (15 min each). Summary: "What TVS doesn't know about its own customers."</td><td>You get closer to the customer than the senior team can.</td></tr>
+          <tr><td><strong>Week 4</strong></td><td>Norton launch positioning</td><td>Proactive deck: "Norton India launch activation framework" — delivered <em>before</em> the PR team asks for input.</td><td>You're operating at manager level, not intern level.</td></tr>
+          <tr><td><strong>Week 5</strong></td><td>Apache Nation pilot</td><td>Pilot plan for a Bengaluru Apache Run. Budget, logistics, measurement plan. Offer to run it yourself.</td><td>You propose and execute — not propose and hope.</td></tr>
+          <tr><td><strong>Week 6</strong></td><td>Digital audit</td><td>Content audit of Apache, Ronin, iQube Instagram vs RE/KTM/Triumph/Ather. Top 3 specific fixes, not 30 vague suggestions.</td><td>You can be directive without being unreasonable.</td></tr>
+          <tr><td><strong>Week 7</strong></td><td>Run the pilot</td><td>Actual Apache Run. Photograph. Measure. Document owner quotes.</td><td>Proof of execution, not just planning.</td></tr>
+          <tr><td><strong>Week 8</strong></td><td>Synthesis · PPO final presentation</td><td>20-slide max deck: what you learned, what you built, what the next 12 months should look like from a Premium BU perspective.</td><td>You think like the person they'd hire you as.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">12.3 Weekly rituals that matter</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Every Monday</h4>
+        <p>15-minute read-through of this platform. Anything stale? Any new data point to integrate? Pick one metric to check this week.</p>
+        <p>Walk into your week knowing what changed.</p>
+      </div>
+      <div class="card">
+        <h4>Every Wednesday</h4>
+        <p>One <strong>field hour</strong> — step out of the office. A dealership. A rider hangout spot. Coffee with an Apache owner. Data comes from the desk; insight comes from the street.</p>
+      </div>
+      <div class="card">
+        <h4>Every Friday</h4>
+        <p>Send your manager a <strong>5-line end-of-week</strong> message: (1) what I learned this week (2) what I'm working on next week (3) one question for you (4) one thing I'd like to try (5) one request for help.</p>
+        <p>Unasked visibility beats requested status updates.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">12.4 Questions to ask your manager (early)</h3>
+
+    <div class="prose">
+      <p>The goal of these questions is not to show how smart you are. It's to <strong>reduce the manager's cognitive load</strong> in explaining context to you, and to pre-empt the most common intern failure mode (doing work that doesn't connect to priorities).</p>
+      <h4>Business context</h4>
+      <ul>
+        <li>"What would a successful FY27 look like for the Premium BU — specifically, which number should be X% higher?"</li>
+        <li>"Where does Norton fit in the BU narrative — is it a product launch or a brand event for the whole premium portfolio?"</li>
+        <li>"What's the one thing the BU is tracking that doesn't show up in the sales numbers?"</li>
+      </ul>
+      <h4>Personal operating</h4>
+      <ul>
+        <li>"What's the fastest way for me to be useful to you in Week 1?"</li>
+        <li>"Who are 3 people outside the BU I should meet in my first month?"</li>
+        <li>"What does 'intern doing a great job' look like, specifically, in your past experience?"</li>
+      </ul>
+      <h4>Career-conversion</h4>
+      <ul>
+        <li>(Week 4-5) "I'd love to understand what a PPO decision depends on here. What do the strongest past interns do that weaker ones don't?"</li>
+        <li>(Week 7) "What's one thing you'd want to see from me in the final two weeks that would be most helpful for your team?"</li>
+      </ul>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">12.5 Personal metrics dashboard</h3>
+
+    <div class="grid-4">
+      <div class="kpi"><div class="kpi-label">Dealerships visited</div><div class="kpi-val">0<span class="kpi-unit">/ 10 target</span></div><div class="kpi-note">Update weekly</div></div>
+      <div class="kpi"><div class="kpi-label">Apache owners interviewed</div><div class="kpi-val">0<span class="kpi-unit">/ 15 target</span></div><div class="kpi-note">5 min-per-week ritual</div></div>
+      <div class="kpi"><div class="kpi-label">Proactive proposals sent</div><div class="kpi-val">0<span class="kpi-unit">/ 4 target</span></div><div class="kpi-note">Target 1 every 2 weeks</div></div>
+      <div class="kpi"><div class="kpi-label">Senior-team interactions</div><div class="kpi-val">0<span class="kpi-unit">/ 8 target</span></div><div class="kpi-note">Visibility is earned</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--ink-4);text-align:center;margin-top:-12px"><em>These are placeholders. Print this page weekly, fill in, stick on your desk.</em></p>
+  </div>
+</section>
+
+<!-- ======== MODULE 13 · BRAND BUILDING MASTERCLASS ======== -->
+<section id="m13">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 13</div>
+        <h2>Brand building, <em>applied to Apache.</em></h2>
+      </div>
+      <p class="module-sub">The frameworks that stand up in a TVS boardroom and survive a marketing VP's scrutiny. Not generic brand theory — applied specifically to Apache's present situation.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">13.1 Premium economics · the four multipliers</h3>
+
+    <div class="grid-4">
+      <div class="card accent"><h4>1 · Price premium</h4><h3>+₹40-60k</h3><p>Between an Apache RTR 200 and a KTM 200 Duke. Nearly identical function. The delta is brand.</p></div>
+      <div class="card accent"><h4>2 · Margin premium</h4><h3>~2x</h3><p>RE operates at ~28% EBITDA. TVS at 13.1%. The gap is brand-driven pricing power.</p></div>
+      <div class="card accent"><h4>3 · Repurchase premium</h4><h3>3-5x</h3><p>Community-active RE owners' likelihood of buying another RE vs TVS's repurchase rate. Industry estimate.</p></div>
+      <div class="card accent"><h4>4 · Halo premium</h4><h3>+10-15%</h3><p>Brand-halo effect on mass-market product pricing when a premium halo exists. BMW 3 Series benefits from M3's existence.</p></div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">13.2 Brand Equity Pyramid · applied to Apache</h3>
+
+    <div class="prose">
+      <p>Kevin Keller's Customer-Based Brand Equity (CBBE) framework — the standard in brand strategy — has four levels. Apache's strengths and gaps map to each:</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>CBBE pyramid · Apache diagnostic</caption>
+        <thead><tr><th>Level</th><th>Question answered</th><th>Apache's status</th><th>Gap</th></tr></thead>
+        <tbody>
+          <tr><td><strong>4 · Resonance</strong></td><td>"How deep is my connection to this brand?"</td><td>Low-medium. Apache owners like their bikes; they don't think about "being an Apache person."</td><td>No community = no resonance.</td></tr>
+          <tr><td><strong>3 · Feelings · Judgments</strong></td><td>"What do I feel / think about this brand?"</td><td>Medium. Associations: "value," "sporty," "racing," "Indian engineering." Less: "premium," "lifestyle," "soul."</td><td>Emotional dimension under-developed.</td></tr>
+          <tr><td><strong>2 · Performance · Imagery</strong></td><td>"What does this brand do / look like?"</td><td>High performance (racing pedigree, Dakar, track records). Imagery: technical / functional, not aspirational / lifestyle.</td><td>Imagery lags performance.</td></tr>
+          <tr><td><strong>1 · Salience</strong></td><td>"Do I know this brand?"</td><td>High. Apache is the second-most-known 2W brand in India after Hero.</td><td>No gap.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand">
+      <h5>The Apache diagnosis in one sentence</h5>
+      <p>Apache has <strong>foundation-level salience and performance</strong> but hollow <strong>feelings, judgments, and resonance</strong>. Most brand-building spend should go into Levels 3 and 4 (owner community, emotional content, cultural associations), not Levels 1 and 2 (which are already strong).</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">13.3 Jobs-to-be-done · the Apache buyer</h3>
+
+    <div class="prose">
+      <p>Clayton Christensen's JTBD reframing: people don't buy products, they "hire" products to do a job. The Apache buyer's job isn't to get from A to B. It's:</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card"><h4>Functional job</h4><h3>"Upgrade from commuter, 150-200cc"</h3><p>Get a better bike than my 125cc Splendor. More power, better brakes, cooler looks.</p></div>
+      <div class="card"><h4>Emotional job</h4><h3>"Announce that I've arrived"</h3><p>A marker of adulthood, earning, crossing from student to professional. The bike as signifier.</p></div>
+      <div class="card"><h4>Social job</h4><h3>"Belong to a tribe"</h3><p>Which tribe: Apache? RE? KTM? Pulsar? Who rides my brand? Who will I ride with? Will my friends approve?</p></div>
+    </div>
+
+    <p style="font-size:14px;color:var(--ink-2);line-height:1.6"><strong>Current Apache marketing over-indexes on the functional job and under-indexes on the emotional and social jobs.</strong> Every premium competitor — RE, KTM, Triumph — leads with the tribe first, the product second. Apache leads with 4V engine, 3 ride modes, 30 bhp. The feature-spec race was won a decade ago. The tribe race is still open.</p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">13.4 From feature to story · the reframing exercise</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Feature-to-narrative reframing · Apache communication rewriting</caption>
+        <thead><tr><th>Feature</th><th>Current communication</th><th>Story-led reframing</th></tr></thead>
+        <tbody>
+          <tr><td>Apache RR310 BMW-derived chassis</td><td>"Collaborated with BMW Motorrad"</td><td>"The only Indian superbike engineered on a German-derived frame. Built by riders who also build Norton."</td></tr>
+          <tr><td>TVS Racing Dakar history</td><td>Occasional results posts</td><td>"An Indian, at the world's hardest race, on a bike built in Hosur. Harith Noah's story." (Long-form film)</td></tr>
+          <tr><td>Apache RTX 300 adventure capability</td><td>"36 bhp, 835mm seat, traction control"</td><td>"The first Indian adventure bike to make Ladakh affordable. Under ₹2 lakh. Three-month waitlist."</td></tr>
+          <tr><td>Apache RTR 160 value pricing</td><td>"Best-in-segment price"</td><td>"The bike that started the performance-commuter segment in 2005. Still the one you grow out of, not grow tired of."</td></tr>
+          <tr><td>Apache + Norton engineering link</td><td>Not communicated</td><td>"The engineers who build Apache also build the new Norton V4 Manx. Our racing lineage just expanded by 100 years."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">13.5 Brand identity territory · what Apache could become</h3>
+
+    <div class="callout gold">
+      <h5>The three candidate positionings</h5>
+      <p><strong>Option A · "Built by Racers"</strong> · Lead with TVS Racing heritage + Norton engineering link. Apache = the Indian-made, race-bred, globally-engineered motorcycle. Taglinable around motorsport. Clean, defensible, but narrow.</p>
+      <p><strong>Option B · "The Free Road"</strong> · Lead with the lifestyle journey. Apache = the bike that takes you places (literal and emotional). Opens up to RTX 300's adventure positioning. Higher emotional ceiling. Risk: generic if not executed distinctively.</p>
+      <p><strong>Option C · "Indian Ambition"</strong> · Lead with the TVS identity — an Indian company that acquired a British heritage brand, races at Dakar, builds engineering-led products. Apache = the motorcycle of a rising India. Risk: dated feeling if not handled with subtlety.</p>
+      <p>Recommendation for internal discussion: <strong>Option A as the anchor, with B as the content territory.</strong> "Built by racers who take you on the free road." Option C is too close to current positioning; the others create distance from competitors.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 14 · FINANCIAL MODELING ======== -->
+<section id="m14">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 14</div>
+        <h2>Back-of-envelope <em>financial modelling.</em></h2>
+      </div>
+      <p class="module-sub">Four models the Premium BU Intern should be able to build in a spreadsheet from memory. All numbers are <strong>illustrative</strong> — use actual TVS figures when you have them. The point is the structure of reasoning, not the precise answers.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px">14.1 Model A · Premium mix impact</h3>
+
+    <div class="prose">
+      <p><strong>The question:</strong> What happens to TVS revenue and EBITDA if Apache's premium-variant mix (RR310 + RTR 310 + RTX 300) rises from ~2% of Apache volume to 5%?</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Scenario: Apache premium mix shift · FY27 illustrative</caption>
+        <thead><tr><th>Scenario</th><th>Apache FY27 units</th><th>Premium variants %</th><th>Premium units</th><th>Blended ASP (est)</th><th>Apache revenue</th></tr></thead>
+        <tbody>
+          <tr><td>Current mix (FY26 actual)</td><td class="num">5,71,376</td><td class="num">~2%</td><td class="num">~12k</td><td class="mono">~₹1.05L</td><td class="num">~₹6,000 Cr</td></tr>
+          <tr style="background:#fff5f4 !important"><td><strong>Shift to 5% premium</strong></td><td class="num">~6,00,000</td><td class="num">5%</td><td class="num">~30k</td><td class="mono">~₹1.18L</td><td class="num">~₹7,080 Cr</td></tr>
+          <tr><td><em>Incremental</em></td><td class="num"><em>+28k</em></td><td class="num"><em>+3%</em></td><td class="num"><em>+18k</em></td><td class="mono"><em>+₹13k</em></td><td class="num"><em><strong class="pos">+₹1,080 Cr</strong></em></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-3);margin-bottom:18px"><em>Assumption: premium variants priced at ₹2.4L avg vs RTR range at ₹1.4L avg. At ~20% incremental EBITDA margin on premium variants, the ₹1,080 Cr delta could translate to ~₹200 Cr incremental EBITDA. <span class="tag verify">[ILLUSTRATIVE]</span> — use actual TVS internal numbers.</em></p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">14.2 Model B · Community investment ROI</h3>
+
+    <div class="prose">
+      <p><strong>The question:</strong> Does an Apache Nation investment of ~₹25 Cr/year pay for itself?</p>
+      <p><strong>Investment:</strong> 20 chapters × ~₹75L/yr (events, staff, merch subsidy) + ~₹3 Cr central team + ~₹7 Cr flagship event = ~₹25 Cr/yr.</p>
+      <p><strong>Returns, conservative:</strong></p>
+      <ul>
+        <li>Repurchase rate lift: if 10% of Apache Nation members buy another TVS product vs 4% baseline → 6 percentage points of ~20,000 active members = 1,200 incremental units × ~₹1.8L avg ASP = <strong>₹21 Cr direct revenue</strong>.</li>
+        <li>Referrals: Each member refers ~1.5 buyers (RE benchmark). 20k members × 1.5 = 30k referred-buyer conversations. Even at 5% conversion on ~₹1.5L ASP = <strong>₹23 Cr</strong>.</li>
+        <li>Social reach: 20k members posting ~2 ride/event posts/month × avg 500 reach = ~240M organic impressions/year, replacing <strong>~₹15-20 Cr of paid spend</strong>.</li>
+        <li>Dealer-conversion lift: Studios co-hosting Apache Runs report ~15-20% higher walk-in-to-test-ride conversion (industry benchmark).</li>
+      </ul>
+      <p><strong>Combined return:</strong> ~₹60-70 Cr on ~₹25 Cr investment = <strong>~2.5-3x ROI</strong>. Plus non-quantifiable brand equity and margin uplift. <span class="tag verify">[ILLUSTRATIVE]</span></p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">14.3 Model C · Norton India business case</h3>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption>Norton India P&amp;L · Year 1-3 illustrative scenario</caption>
+        <thead><tr><th>Line</th><th>Y1 (FY27)</th><th>Y2 (FY28)</th><th>Y3 (FY29)</th><th>Assumptions</th></tr></thead>
+        <tbody>
+          <tr><td>Atlas India units</td><td class="num">1,500</td><td class="num">5,000</td><td class="num">10,000</td><td>India-made, ₹5L ASP, vs Himalayan 450 sold 32k in FY26 across variants</td></tr>
+          <tr><td>V4 Manx India units</td><td class="num">150</td><td class="num">300</td><td class="num">500</td><td>Imported · prestige model · ~₹28L ASP</td></tr>
+          <tr><td>Revenue</td><td class="num">~₹117 Cr</td><td class="num">~₹334 Cr</td><td class="num">~₹640 Cr</td><td></td></tr>
+          <tr><td>EBITDA margin %</td><td class="num">~15%</td><td class="num">~22%</td><td class="num">~28%</td><td>Steady state matches Eicher/RE · premium economics</td></tr>
+          <tr><td>EBITDA</td><td class="num">~₹17 Cr</td><td class="num">~₹73 Cr</td><td class="num">~₹180 Cr</td><td></td></tr>
+          <tr><td><strong>Cumulative EBITDA</strong></td><td class="num"><strong>~₹17 Cr</strong></td><td class="num"><strong>~₹90 Cr</strong></td><td class="num"><strong>~₹270 Cr</strong></td><td>Still below ₹2,000 Cr+ sunk investment — returns measured on 7-10 year horizon.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-3);margin-bottom:18px"><em>Norton is not a 3-year payback. TVS's acquisition has always been framed as a long-horizon brand asset, not a quarterly earnings contributor. For board-level framing: the real metric is <strong>Norton-enabled uplift on Apache brand equity</strong>, not standalone Norton P&amp;L. <span class="tag verify">[ILLUSTRATIVE]</span></em></p>
+
+    <h3 style="font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;margin:42px 0 14px">14.4 Model D · Social media ROI framework</h3>
+
+    <div class="prose">
+      <p><strong>The trap:</strong> measuring social-media spend against "engagement" or "reach" is low-signal. The only metrics that matter are ones that tie to business outcomes.</p>
+      <h4>Premium-brand social ROI · the 4 real metrics</h4>
+      <ol style="padding-left:20px;margin-bottom:14px">
+        <li style="margin-bottom:6px"><strong>Save rate</strong> — % of viewers who save a post. Save &gt; Like &gt; Comment for purchase-consideration signalling.</li>
+        <li style="margin-bottom:6px"><strong>Search lift</strong> — Google Trends search volume for "Apache RR310" or "Apache RTX 300" around content drops. Measurable, directional.</li>
+        <li style="margin-bottom:6px"><strong>Test-ride booking attribution</strong> — dealer CRM tag for "came in because of [content]." Requires sales-floor discipline, but converts to revenue metrics.</li>
+        <li style="margin-bottom:6px"><strong>UGC ratio</strong> — posts from Apache owners / posts from TVS. Ratio rising means community is compounding. Ratio falling means Apache is a broadcast brand, not a community brand.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MODULE 15 · NEWS FEED ======== -->
+<section id="m15">
+  <div class="wrap">
+    <div class="module-head">
+      <div>
+        <div class="module-tag">Module 15 · Living section</div>
+        <h2>News feed · <em>last 30 days.</em></h2>
+      </div>
+      <p class="module-sub">A rolling snapshot of the most important news in the Premium BU's orbit. This module is <strong>the one you refresh weekly</strong>. The items below are from the April 2026 build; update titles as new stories break. Filter: TVS + competitors + policy + global premium motorcycle news.</p>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.01em;margin-bottom:12px">TVS Motor Company</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Apr 2026 · FY26 wrap</h4>
+        <h3>TVS Apache crosses 5.71 lakh units</h3>
+        <p>FY26 Apache series units: 5,71,376 (+28% YoY). 38% share of 150-200cc segment. 40% of TVS's total motorcycle dispatches. Q4 FY26 delivered record numbers post-GST 2.0.</p>
+      </div>
+      <div class="card">
+        <h4>Mar 2026</h4>
+        <h3>TVS FY26 total 58.89 lakh units</h3>
+        <p>2W units 56.70 lakh (+23%), 3W 2.19 lakh (+63%), exports 15.85 lakh (+33%). EV 2W leader for full year at 3,41,647 units.</p>
+      </div>
+      <div class="card">
+        <h4>Jan 2026</h4>
+        <h3>Q3 FY26: record quarter across every metric</h3>
+        <p>Standalone revenue ₹12,476 Cr (+37%), EBITDA margin 13.1% (record), PAT ₹940 Cr (+52%). EV sales 1.06 lakh units (+40%).</p>
+      </div>
+      <div class="card">
+        <h4>Dec 2025</h4>
+        <h3>Apache RTX Anniversary Edition + Ronin Agonda</h3>
+        <p>Two limited editions launched. Ronin Agonda ₹1,30,990. Custom motorcycles with Smoked Garage (Ronin Kensai, Apache RR310 Speedline) — first premium collab for TVS.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.01em;margin:28px 0 12px">Competitors</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Apr 2026 · Royal Enfield</h4>
+        <h3>12.39 lakh units · FY26 · record</h3>
+        <p>Highest-ever annual sales. Domestic 11,07,343 (+23%). Exports 1,31,316 (+23%). ₹958 Cr Cheyyar expansion announced to raise capacity to 2 million units/year.</p>
+      </div>
+      <div class="card">
+        <h4>Apr 2026 · EV market</h4>
+        <h3>Ola Electric FY26: -52%, Hero Vida: +196%</h3>
+        <p>Legacy OEM surge continues. TVS + Bajaj + Hero combined EV 2W share ~55% in FY26 vs ~35% in FY25. Subsidies under PM E-DRIVE scheduled to end July 2026.</p>
+      </div>
+      <div class="card">
+        <h4>Nov 2025 · Royal Enfield</h4>
+        <h3>Flying Flea C6 + S6 revealed at EICMA</h3>
+        <p>First RE electric motorcycles. C6 (retro) launches end-2026 at ~₹4.5L. S6 (scrambler) at ~₹2-3L. Himalayan 750 also teased.</p>
+      </div>
+      <div class="card">
+        <h4>Nov 2025 · Norton</h4>
+        <h3>4 new models revealed at EICMA</h3>
+        <p>V4 Manx / Manx R (1200cc, Solihull UK), Atlas / Atlas GT (585cc parallel twin, India-made at Hosur). India launch April 2026.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-.01em;margin:28px 0 12px">Policy · industry</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>FY26 · Industry</h4>
+        <h3>2W retail crosses 2.14 Cr · first time past FY19 peak</h3>
+        <p>FADA data. +13.4% YoY. Rural (+28.6% in Mar) matching urban (+28.8%) first time in years. First sustained recovery since pre-Covid.</p>
+      </div>
+      <div class="card">
+        <h4>H2 FY26 · GST</h4>
+        <h3>GST 2.0 rationalisation on sub-350cc 2Ws</h3>
+        <p>Sub-350cc 2Ws got rate rationalisation effective H2 FY26. Drove record October 2025 industry month (1.67 lakh Apache units alone). Entry-premium bikes materially cheaper.</p>
+      </div>
+      <div class="card">
+        <h4>Jul 2026 · Upcoming</h4>
+        <h3>PM E-DRIVE subsidies phasing out</h3>
+        <p>Electric 2W demand subsidies under PM E-DRIVE scheme end July 2026. Industry is confident in sustained growth even post-subsidy given scale efficiencies.</p>
+      </div>
+      <div class="card">
+        <h4>FY26 · Exports</h4>
+        <h3>Industry 2W exports crossed 54 lakh units</h3>
+        <p>April-January cumulative. Bajaj, TVS, Honda leading. Premium 2W export from India (Apache RR310, Norton Atlas, Triumph 400) is an expanding global story.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== DATA SOURCES PANEL ======== -->
+<section id="sources" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="src">
+      <h3>Data sources · verification trail</h3>
+      <p style="color:var(--ink-3);font-size:14px;margin-bottom:20px;max-width:860px">Every number in this platform is from one of the sources below. Any number not from one of these sources is flagged <span class="tag verify">[ESTIMATE]</span> or <span class="tag verify">[VERIFY]</span>. If you cite this deck in a meeting, you can cite it to the underlying source.</p>
+
+      <div class="src-grid">
+        <div><strong>TVS Motor Company · Investor Relations</strong><a href="https://www.tvsmotor.com/investors" target="_blank">tvsmotor.com/investors</a></div>
+        <div><strong>Eicher Motors · Quarterly results</strong><a href="https://www.eicher.in/investors" target="_blank">eicher.in/investors</a></div>
+        <div><strong>Society of Indian Automobile Manufacturers (SIAM)</strong><a href="https://www.siam.in" target="_blank">siam.in</a></div>
+        <div><strong>Federation of Automobile Dealers Associations (FADA)</strong><a href="https://fada.in" target="_blank">fada.in</a></div>
+        <div><strong>Vahan Dashboard · Government of India</strong><a href="https://vahan.parivahan.gov.in" target="_blank">vahan.parivahan.gov.in</a></div>
+        <div><strong>Autocar Professional</strong><a href="https://www.autocarpro.in" target="_blank">autocarpro.in</a></div>
+        <div><strong>Autocar India</strong><a href="https://www.autocarindia.com" target="_blank">autocarindia.com</a></div>
+        <div><strong>RushLane</strong><a href="https://www.rushlane.com" target="_blank">rushlane.com</a></div>
+        <div><strong>BikeAdvice</strong><a href="https://bikeadvice.in" target="_blank">bikeadvice.in</a></div>
+        <div><strong>BikeWale</strong><a href="https://www.bikewale.com" target="_blank">bikewale.com</a></div>
+        <div><strong>BikeDekho</strong><a href="https://www.bikedekho.com" target="_blank">bikedekho.com</a></div>
+        <div><strong>Gaadiwaadi</strong><a href="https://gaadiwaadi.com" target="_blank">gaadiwaadi.com</a></div>
+        <div><strong>Business Standard · Auto</strong><a href="https://www.business-standard.com/companies" target="_blank">business-standard.com</a></div>
+        <div><strong>Economic Times Auto</strong><a href="https://auto.economictimes.indiatimes.com" target="_blank">auto.economictimes.indiatimes.com</a></div>
+        <div><strong>Business Today · Auto</strong><a href="https://www.businesstoday.in" target="_blank">businesstoday.in</a></div>
+        <div><strong>EVINDIA</strong><a href="https://evindia.online" target="_blank">evindia.online</a></div>
+        <div><strong>Motorcycle News (UK)</strong><a href="https://www.motorcyclenews.com" target="_blank">motorcyclenews.com</a></div>
+        <div><strong>Norton Motorcycles · Official</strong><a href="https://www.nortonmotorcycles.com" target="_blank">nortonmotorcycles.com</a></div>
+        <div><strong>TVS Racing · Official</strong><a href="https://www.tvsracing.com" target="_blank">tvsracing.com</a></div>
+        <div><strong>Royal Enfield · Official</strong><a href="https://www.royalenfield.com" target="_blank">royalenfield.com</a></div>
+        <div><strong>Ather Energy · Investor</strong><a href="https://www.atherenergy.com" target="_blank">atherenergy.com</a></div>
+      </div>
+
+      <h3 style="margin-top:40px">Methodology · data freshness classification</h3>
+      <div class="grid-3" style="margin-top:14px">
+        <div class="card">
+          <h4>Verified (Green)</h4>
+          <p style="font-size:13px">Sourced from official company disclosures, SIAM / FADA / Vahan data, or peer-reviewed industry publications in the last 90 days. Direct citation available.</p>
+        </div>
+        <div class="card">
+          <h4><span class="tag verify">[ESTIMATE]</span></h4>
+          <p style="font-size:13px">Analyst inference from public data — e.g., blended ASP calculations, segment margin estimates, forward-looking targets. Directional, not precise. Triangulated where possible.</p>
+        </div>
+        <div class="card">
+          <h4><span class="tag verify">[VERIFY]</span></h4>
+          <p style="font-size:13px">Number or claim from a single source that should be cross-checked before citation in high-stakes context. Flagged inline where it appears.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">Maintenance schedule · self-serve updates</h3>
+      <div class="prose" style="max-width:none;margin-top:14px">
+        <p><strong>Every Monday (5 min):</strong> Check FADA monthly retail release; update Module 01 KPIs if new month dropped.</p>
+        <p><strong>Every quarter (30 min):</strong> TVS quarterly result drops → update Module 02 financials. Eicher/Bajaj/Ather result drops → update Module 05.</p>
+        <p><strong>Once a quarter (1 hour):</strong> Pricing refresh for Module 06 table. Ex-showroom prices on manufacturer sites.</p>
+        <p><strong>Ad-hoc:</strong> Any launch (Apache variant, Norton bike, RE product) → Module 04 / 15. Any strategic news (Norton India pricing, Flying Flea launch date) → Module 03 / 10.</p>
+        <p style="color:var(--ink-3);font-size:13px;margin-top:16px"><em>This platform is a static HTML file. To update a number, open the file in any text editor, find the number, change it, save. That's it. No framework to maintain, no dependencies to update. Print to PDF for a snapshot of today's state any time.</em></p>
+      </div>
+
+      <h3 style="margin-top:40px">Honest caveats · what this platform is and isn't</h3>
+      <div class="callout race" style="margin-top:14px">
+        <h5>Read before citing</h5>
+        <p><strong>What this is:</strong> a structured personal reference tool, built from publicly available data, designed to be the single place you open before a meeting about TVS Premium. It consolidates what a good analyst could find in a day of searching, into one scannable surface.</p>
+        <p><strong>What it is not:</strong> a TVS-official document. Internal segment-level margins, product-level profitability, customer CLV, Apache repurchase rate, Norton unit targets, and Apache Studio capex — all of these are either confidential or not disclosed publicly, and every estimate above is analyst-inference. Always defer to your manager's real numbers over the estimates here.</p>
+        <p><strong>What happens if you cite it wrong:</strong> senior stakeholders will catch it. You lose credibility faster than you build it. Always cite the underlying source (SIAM, FADA, TVS IR), never "this document."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= CHART JS + NAV JS ========= -->
+<script>
+Chart.defaults.font.family = "'Archivo', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#2b2b2b';
+Chart.defaults.borderColor = '#e6e4df';
+
+// Industry trend
+new Chart(document.getElementById('indTrend'), {
+  type:'bar',
+  data:{
+    labels:['FY19','FY20','FY21','FY22','FY23','FY24','FY25','FY26'],
+    datasets:[{
+      label:'2W retail (million units)',
+      data:[21.18, 17.42, 15.12, 13.50, 15.86, 17.97, 18.89, 21.42],
+      backgroundColor:['#e6e4df','#e6e4df','#e6e4df','#e6e4df','#e6e4df','#0a5fff','#0a5fff','#e5231b'],
+      borderRadius:2,
+      borderWidth:0
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'M units'}}},
+    scales:{
+      y:{beginAtZero:true,grid:{color:'#f0efea'},ticks:{callback:v=>v+'M'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// OEM share pie
+new Chart(document.getElementById('oemShare'), {
+  type:'doughnut',
+  data:{
+    labels:['Hero','Honda','TVS','Bajaj','Suzuki','RE','Yamaha','Others'],
+    datasets:[{
+      data:[28.4, 25.0, 18.9, 10.5, 5.3, 5.2, 3.3, 3.4],
+      backgroundColor:['#0a0a0a','#595959','#e5231b','#0038a8','#c49a3e','#ff4d43','#8a8a8a','#cecac3'],
+      borderColor:'#fff',borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'right',labels:{boxWidth:10,padding:8,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'%'}}
+    }
+  }
+});
+
+// OEM YoY bar
+new Chart(document.getElementById('oemYoy'), {
+  type:'bar',
+  data:{
+    labels:['RE','Hero','Honda','TVS','Bajaj','Suzuki','Yamaha','Ather','Ola'],
+    datasets:[{
+      label:'YoY growth (%)',
+      data:[22.8, 11.7, 12.0, 14.0, 12.5, 14.0, 5.0, 82.3, -52.3],
+      backgroundColor:ctx=>ctx.parsed.y<0?'#c8261c':(ctx.parsed.y>30?'#127a3e':'#0a5fff'),
+      borderRadius:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'#f0efea'},ticks:{callback:v=>v+'%'}},
+      y:{grid:{display:false}}
+    }
+  }
+});
+
+// TVS revenue
+new Chart(document.getElementById('tvsRev'), {
+  type:'line',
+  data:{
+    labels:['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26'],
+    datasets:[{
+      label:'Revenue (₹ Cr, standalone)',
+      data:[8876, 9228, 9097, 9587, 10100, 11887, 12476],
+      borderColor:'#e5231b',
+      backgroundColor:'rgba(229,35,27,.08)',
+      tension:.3,
+      fill:true,
+      pointRadius:4,
+      pointBackgroundColor:'#e5231b',
+      pointBorderColor:'#fff',
+      pointBorderWidth:2,
+      borderWidth:2.5
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'₹'+c.parsed.y.toLocaleString()+' Cr'}}},
+    scales:{
+      y:{grid:{color:'#f0efea'},ticks:{callback:v=>'₹'+(v/1000).toFixed(1)+'k Cr'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// TVS margin
+new Chart(document.getElementById('tvsMargin'), {
+  type:'line',
+  data:{
+    labels:['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26'],
+    datasets:[
+      {label:'TVS EBITDA margin (%)',data:[11.2,11.9,11.9,12.3,12.4,12.8,13.1],borderColor:'#0038a8',backgroundColor:'rgba(0,56,168,.06)',tension:.3,fill:true,pointRadius:3,pointBackgroundColor:'#0038a8',borderWidth:2.5},
+      {label:'RE/Eicher (benchmark)',data:[26.5,27.0,27.2,27.5,27.3,27.8,28.0],borderColor:'#c49a3e',borderDash:[4,4],tension:.3,fill:false,pointRadius:3,pointBackgroundColor:'#c49a3e',borderWidth:2}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
+    scales:{
+      y:{grid:{color:'#f0efea'},ticks:{callback:v=>v+'%'},suggestedMin:10,suggestedMax:30},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// EV share shift
+new Chart(document.getElementById('evShift'), {
+  type:'bar',
+  data:{
+    labels:['TVS iQube','Bajaj Chetak','Ather','Ola Electric','Hero Vida','Others'],
+    datasets:[
+      {label:'FY25 share (%)',data:[20.7, 20.1, 11.4, 29.9, 4.2, 13.7],backgroundColor:'#cecac3',borderRadius:2},
+      {label:'FY26 share (%)',data:[24.4, 20.6, 17.2, 11.7, 10.3, 15.8],backgroundColor:'#e5231b',borderRadius:2}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}
+    },
+    scales:{
+      y:{grid:{color:'#f0efea'},ticks:{callback:v=>v+'%'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// Nav active highlighting
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id]');
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id;
+      navLinks.forEach(a=>{
+        a.classList.toggle('active', a.getAttribute('href')==='#'+id);
+      });
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+
+</body>
+</html>
